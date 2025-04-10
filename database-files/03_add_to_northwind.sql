@@ -1,4 +1,4 @@
-USE northwind;
+USE motivate;
 
 -- -----------------------------------------------------
 -- Model Params Table and data added by Dr. Fontenot
