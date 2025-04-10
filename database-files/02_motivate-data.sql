@@ -58,7 +58,6 @@ INSERT INTO 'mcat_chapters' ('chapter_id', 'student_id', 'topic', 'status', 'las
 INSERT INTO 'mcat_chapters' ('chapter_id', 'student_id', 'topic', 'status', 'last_reviewed') VALUES (55, 88, 'sed', 'inprogress', '2025-03-08');
 INSERT INTO 'mcat_chapters' ('chapter_id', 'student_id', 'topic', 'status', 'last_reviewed') VALUES (34, 37, 'rhoncus', 'inprogress', '2024-08-13');
 INSERT INTO 'mcat_chapters' ('chapter_id', 'student_id', 'topic', 'status', 'last_reviewed') VALUES (43, 74, 'velit vivamus', 'inprogress', '2024-12-01');
-# 35 records
 
 #
 # Dumping data for table 'pre_med_requirements'
@@ -99,7 +98,6 @@ INSERT INTO 'pre_med_requirements' ('req_id', 'student_id', 'description', 'stat
 INSERT INTO 'pre_med_requirements' ('req_id', 'student_id', 'description', 'status', 'target_date') VALUES (70, 99, 'In tempor, turpis nec euismod scelerisque, quam turpis adipiscing lorem, vitae mattis nibh ligula nec sem.', 'inprogress', '2025-04-05');
 INSERT INTO 'pre_med_requirements' ('req_id', 'student_id', 'description', 'status', 'target_date') VALUES (56, 100, 'Maecenas pulvinar lobortis est.', 'completed', '2024-12-15');
 INSERT INTO 'pre_med_requirements' ('req_id', 'student_id', 'description', 'status', 'target_date') VALUES (11, 70, 'Duis mattis egestas metus.', 'inprogress', '2024-08-11');
-# 35 records 
 
 #
 # Dumping data for table 'lesson_plans'
@@ -145,7 +143,6 @@ INSERT INTO 'lesson_plans' ('plan_id', 'course_id', 'professor_id', 'date', 'con
 INSERT INTO 'lesson_plans' ('plan_id', 'course_id', 'professor_id', 'date', 'content') VALUES (30, 26, 76, '12/6/2024', 'Donec dapibus.');
 INSERT INTO 'lesson_plans' ('plan_id', 'course_id', 'professor_id', 'date', 'content') VALUES (20, 12, 76, '1/11/2025', 'Nullam orci pede, venenatis non, sodales sed, tincidunt eu, felis.');
 INSERT INTO 'lesson_plans' ('plan_id', 'course_id', 'professor_id', 'date', 'content') VALUES (17, 100, 100, '6/29/2024', 'Integer tincidunt ante vel ipsum.');
-# 40 records
 
 #
 # Dumping data for table 'grocery_items'
@@ -191,7 +188,6 @@ INSERT INTO 'grocery_items' ('item_id', 'list_id', 'name', 'quantity', 'purchase
 INSERT INTO 'grocery_items' ('item_id', 'list_id', 'name', 'quantity', 'purchase_status') VALUES (46, 13, 'Foam Muscle Roller', 60, 'pending');
 INSERT INTO 'grocery_items' ('item_id', 'list_id', 'name', 'quantity', 'purchase_status') VALUES (70, 89, 'Vegetable Korma', 67, 'purchased');
 INSERT INTO 'grocery_items' ('item_id', 'list_id', 'name', 'quantity', 'purchase_status') VALUES (83, 41, 'Spicy Tuna Rolls', 87, 'pending');
-# 40 records
 
 #
 # Dumping data for table 'tickets'
@@ -237,7 +233,6 @@ INSERT INTO 'tickets' ('ticket_id', 'title', 'date', 'status', 'description') VA
 INSERT INTO 'tickets' ('ticket_id', 'title', 'date', 'status', 'description') VALUES (94, 'Step Up 3D', '8/27/2024', 'resolved', 'Etiam justo.');
 INSERT INTO 'tickets' ('ticket_id', 'title', 'date', 'status', 'description') VALUES (59, 'Delphine 1, Yvan 0', '6/7/2024', 'resolved', 'Morbi non lectus.');
 INSERT INTO 'tickets' ('ticket_id', 'title', 'date', 'status', 'description') VALUES (40, 'Story of the Weeping Camel, The (Geschichte vom weinenden Kamel, Die)', '5/6/2024', 'inprogress', 'Pellentesque eget nunc.');
-# 40 records
 
 #
 # Dumping data for table 'club_events'
@@ -278,7 +273,10 @@ INSERT INTO 'club_events' ('club_event_id', 'name', 'location', 'date') VALUES (
 INSERT INTO 'club_events' ('club_event_id', 'name', 'location', 'date') VALUES (10, 'Baked Falafel', 'Room 1110', '4/22/2024');
 INSERT INTO 'club_events' ('club_event_id', 'name', 'location', 'date') VALUES (6, 'Garden Vegetable Chips', 'PO Box 96013', '10/29/2024');
 INSERT INTO 'club_events' ('club_event_id', 'name', 'location', 'date') VALUES (23, 'Cotton Pajama Set', 'Room 160', '9/7/2024');
-# 35 records
+
+#
+# Dumping data for table 'club_events'
+#
 
 INSERT INTO 'calendar_events' ('description', 'date_time', 'type', 'user_id', 'customer_id') VALUES ('Mauris sit amet eros. Suspendisse accumsan tortor quis turpis.', '2024-10-09', 'curae', '635058631-X', '585937318-X');
 INSERT INTO 'calendar_events' ('description', 'date_time', 'type', 'user_id', 'customer_id') VALUES ('In hac habitasse platea dictumst.', '2024-07-25', 'cras', '971730883-7', '408720654-8');
@@ -321,6 +319,10 @@ INSERT INTO 'calendar_events' ('description', 'date_time', 'type', 'user_id', 'c
 INSERT INTO 'calendar_events' ('description', 'date_time', 'type', 'user_id', 'customer_id') VALUES ('Mauris ullamcorper purus sit amet nulla. Quisque arcu libero, rutrum ac, lobortis vel, dapibus at, diam. Nam tristique tortor eu pede.', '2024-11-02', 'erat', '030618322-6', '417608268-2');
 INSERT INTO 'calendar_events' ('description', 'date_time', 'type', 'user_id', 'customer_id') VALUES ('Nulla nisl. Nunc nisl.', '2024-11-08', 'consectetuer', '551006027-1', '719770660-2');
 
+#
+# Dumping data for table 'calendar_events'
+#
+
 INSERT INTO 'grocery_list' ('user_id', 'title', 'created_at', 'updated_at', 'list_id') VALUES ('01JRGGFYSFVMQVN0DCAVDF2340', 'sed', '2025-03-14', '2024-12-21', '01JRGGFYSGJJF7CWK3A43SGSDN');
 INSERT INTO 'grocery_list' ('user_id', 'title', 'created_at', 'updated_at', 'list_id') VALUES ('01JRGGFYSG1B4CS1GEZ0QX80M7', 'curae', '2024-12-26', '2024-06-05', '01JRGGFYSH5S3J1J1VWRH5WMKX');
 INSERT INTO 'grocery_list' ('user_id', 'title', 'created_at', 'updated_at', 'list_id') VALUES ('01JRGGFYSHZJ9HEWXSBBVP47B4', 'quisque', '2024-04-10', '2025-04-08', '01JRGGFYSJAE5R0KZXB53WEF55');
@@ -361,6 +363,10 @@ INSERT INTO 'grocery_list' ('user_id', 'title', 'created_at', 'updated_at', 'lis
 INSERT INTO 'grocery_list' ('user_id', 'title', 'created_at', 'updated_at', 'list_id') VALUES ('01JRGGFYTZBW0NN26PFTPPN0KR', 'metus', '2024-05-03', '2025-02-07', '01JRGGFYV0X0TF1DK01D6PEXSA');
 INSERT INTO 'grocery_list' ('user_id', 'title', 'created_at', 'updated_at', 'list_id') VALUES ('01JRGGFYV043PED0E5ST5EJQJ9', 'dui', '2024-08-27', '2024-05-13', '01JRGGFYV0VN415SWCBC9GY4J1');
 INSERT INTO 'grocery_list' ('user_id', 'title', 'created_at', 'updated_at', 'list_id') VALUES ('01JRGGFYV05K3ASPKTT4YF5S53', 'suspendisse', '2024-12-28', '2025-02-10', '01JRGGFYV1V2AJQS794MZEE8HP');
+
+#
+# Dumping data for table 'grocery_list'
+#
 
 INSERT INTO 'parent' ('name', 'occupation', 'age', 'user_id') VALUES ('in', 'Senior Editor', 15, '01JRGGX0QJPW80SBVQ708YQTF3');
 INSERT INTO 'parent' ('name', 'occupation', 'age', 'user_id') VALUES ('porttitor', 'Recruiter', 33, '01JRGGX0QJBDHB7NFH6JRZYYJJ');
@@ -403,6 +409,10 @@ INSERT INTO 'parent' ('name', 'occupation', 'age', 'user_id') VALUES ('aliquam',
 INSERT INTO 'parent' ('name', 'occupation', 'age', 'user_id') VALUES ('leo', 'Occupational Therapist', 7, '01JRGGX0R491R8RY0NQPAXZMJH');
 INSERT INTO 'parent' ('name', 'occupation', 'age', 'user_id') VALUES ('ante', 'Technical Writer', 32, '01JRGGX0R4FJHKM0PZ3RNQZ8B9');
 
+#
+# Dumping data for table 'parent'
+#
+
 INSERT INTO 'todo_list' ('user_id', 'title', 'created_at', 'updated_at', 'list_id') VALUES ('01JRGHK3ZAZA8NKY332TF2F3B8', 'dui', '2024-10-20', '2025-02-25', '01JRGHK3ZB8CF665Z40KAB2E8J');
 INSERT INTO 'todo_list' ('user_id', 'title', 'created_at', 'updated_at', 'list_id') VALUES ('01JRGHK3ZBEQ9TMMW5ARAVW2JQ', 'ac', '2024-10-15', '2024-12-24', '01JRGHK3ZCA3G5T258K5MNSAV5');
 INSERT INTO 'todo_list' ('user_id', 'title', 'created_at', 'updated_at', 'list_id') VALUES ('01JRGHK3ZCXNMP4R04Z5WSSSXK', 'ultricies', '2024-04-13', '2024-09-14', '01JRGHK3ZD896EH6RBS6H1JPQ2');
@@ -444,6 +454,10 @@ INSERT INTO 'todo_list' ('user_id', 'title', 'created_at', 'updated_at', 'list_i
 INSERT INTO 'todo_list' ('user_id', 'title', 'created_at', 'updated_at', 'list_id') VALUES ('01JRGHK40CJ34JNQGCMR18BN5F', 'maecenas', '2024-11-02', '2024-05-25', '01JRGHK40D9F99QKHRMMA1GASC');
 INSERT INTO 'todo_list' ('user_id', 'title', 'created_at', 'updated_at', 'list_id') VALUES ('01JRGHK40DXTZSTG3PS5AFE0AT', 'adipiscing', '2024-06-18', '2024-12-05', '01JRGHK40D62269VXSESMYVT1H');
 
+#
+# Dumping data for table 'todo_list'
+#
+
 INSERT INTO 'system_admin' ('user_id') VALUES ('01JRGKT18GWDJ4NPAQQR2BBA4M');
 INSERT INTO 'system_admin' ('user_id') VALUES ('01JRGKT18GERXM5RSSGTZ9ATKN');
 INSERT INTO 'system_admin' ('user_id') VALUES ('01JRGKT18GEAVG0W93H53FAVXZ');
@@ -484,6 +498,10 @@ INSERT INTO 'system_admin' ('user_id') VALUES ('01JRGKT18MCC8XMP192FQS57SR');
 INSERT INTO 'system_admin' ('user_id') VALUES ('01JRGKT18MQJYCR1TCBT5CEJ8P');
 INSERT INTO 'system_admin' ('user_id') VALUES ('01JRGKT18M7G4BEFK1A09A8R2Q');
 INSERT INTO 'system_admin' ('user_id') VALUES ('01JRGKT18MX62DM9Q240E3E21M');
+
+#
+# Dumping data for table 'system_admin'
+#
 
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
