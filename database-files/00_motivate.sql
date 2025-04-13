@@ -102,7 +102,7 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 -- Table `motivate`.`calendar_events`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `northwind`.`calendar_events` (
+CREATE TABLE IF NOT EXISTS `motivate`.`calendar_events` (
   `calendar_event_id` INT NOT NULL AUTO_INCREMENT,
   `description` VARCHAR(200) NULL DEFAULT NULL,
   `date_time` DATETIME NULL DEFAULT NULL,
@@ -338,7 +338,7 @@ CREATE TABLE IF NOT EXISTS `motivate`.`sleep_logs` (
   `start_time` TIMESTAMP NULL DEFAULT NULL,
   `end_time` TIMESTAMP NULL DEFAULT NULL,
   `baby_name` VARCHAR(100) NULL DEFAULT NULL,
-  PRIMARY KEY (`string_id`)
+  PRIMARY KEY (`sleep_id`)
   FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
