@@ -2,7 +2,7 @@ from flask import Flask
 
 from backend.db_connection import db
 from backend.customers.customer_routes import customers
-from backend.system_admins.system_admins_routes import system_admins
+from backend.products.products_routes import products
 from backend.simple.simple_routes import simple_routes
 import os
 from dotenv import load_dotenv
@@ -41,10 +41,7 @@ def create_app():
     app.logger.info('current_app(): registering blueprints with Flask app object.')   
     app.register_blueprint(simple_routes)
     app.register_blueprint(customers,   url_prefix='/c')
-
-    app.register_blueprint(decision_maker, url_prefix='d')
-
-    app.register_blueprint(system_admins,    url_prefix='/sa')
+    app.register_blueprint(products,    url_prefix='/p')
 
     # Don't forget to return the app object
     return app

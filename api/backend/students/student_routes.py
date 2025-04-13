@@ -1,5 +1,5 @@
 ########################################################
-# Sample customers blueprint of endpoints
+# Sample students blueprint of endpoints
 # Remove this file if you are not using it in your project
 ########################################################
 from flask import Blueprint
@@ -13,17 +13,20 @@ from backend.ml_models.model01 import predict
 #------------------------------------------------------------
 # Create a new Blueprint object, which is a collection of 
 # routes.
-customers = Blueprint('customers', __name__)
+students = Blueprint('students', __name__)
 
 
 #------------------------------------------------------------
-# Get all customers from the system
-@customers.route('/customers', methods=['GET'])
-def get_customers():
+# Get all students from the system
+@students.route('/students', methods=['GET'])
+def get_students():
 
     cursor = db.get_db().cursor()
-    cursor.execute('''SELECT id, company, last_name,
-                    first_name, job_title, business_phone FROM customers
+    cursor.execute('''
+        SELECT s.StudentID, u.Name, u.Email, u.Role, c.Name AS CourseName
+        FROM Student s
+        JOIN User u ON s.UserID = u.UserID
+        LEFT JOIN Course c ON s.CourseID = c.CourseID
     ''')
     
     theData = cursor.fetchall()
@@ -33,32 +36,36 @@ def get_customers():
     return the_response
 
 #------------------------------------------------------------
-# Update customer info for customer with particular userID
-#   Notice the manner of constructing the query.
-@customers.route('/customers', methods=['PUT'])
-def update_customer():
-    current_app.logger.info('PUT /customers route')
-    cust_info = request.json
-    cust_id = cust_info['id']
-    first = cust_info['first_name']
-    last = cust_info['last_name']
-    company = cust_info['company']
+# Update student info 
+@students.route('/students', methods=['PUT'])
+def update_student():
+    current_app.logger.info('PUT /students route')
+    student_info = request.json
+    student_id = student_info['StudentID']
+    name = student_info.get('Name')
+    course_id = student_info.get('CourseID')
 
-    query = 'UPDATE customers SET first_name = %s, last_name = %s, company = %s where id = %s'
-    data = (first, last, company, cust_id)
+    
     cursor = db.get_db().cursor()
-    r = cursor.execute(query, data)
+    update_data.append(student_id)
+    query = f'''
+        UPDATE Student
+        SET {', '.join(update_fields)}
+        WHERE StudentID = %s
+        '''
+    cursor.execute(query, data)
     db.get_db().commit()
-    return 'customer updated!'
+    return 'student updated!'
 
 #------------------------------------------------------------
-# Get customer detail for customer with particular userID
+# Get student detail for student with particular userID
 #   Notice the manner of constructing the query. 
-@customers.route('/customers/<userID>', methods=['GET'])
-def get_customer(userID):
-    current_app.logger.info('GET /customers/<userID> route')
+@students.route('/students/<student_id>', methods=['GET'])
+def get_student(student_id):
+    current_app.logger.info('GET /students/<student_id> route')
     cursor = db.get_db().cursor()
-    cursor.execute('SELECT id, first_name, last_name FROM customers WHERE id = {0}'.format(userID))
+    
+    cursor.execute('SELECT student_id, Name, Email FROM students WHERE id = {0}'.format(student_id))
     
     theData = cursor.fetchall()
     
@@ -69,7 +76,7 @@ def get_customer(userID):
 #------------------------------------------------------------
 # Makes use of the very simple ML model in to predict a value
 # and returns it to the user
-@customers.route('/prediction/<var01>/<var02>', methods=['GET'])
+@students.route('/prediction/<var01>/<var02>', methods=['GET'])
 def predict_value(var01, var02):
     current_app.logger.info(f'var01 = {var01}')
     current_app.logger.info(f'var02 = {var02}')
