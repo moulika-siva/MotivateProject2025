@@ -17,7 +17,7 @@ from backend.db_connection import db
 system_admins = Blueprint('system_admins', __name__)
 
 #------------------------------------------------------------
-# Get all the products from the database, package them up,
+# Get all the system_admins from the database, package them up,
 # and return them to the client
 @system_admins.route('/system_admin', methods=['GET'])
 def get_products():
@@ -84,13 +84,3 @@ def add_new_product():
     response = make_response("Successfully added product")
     response.status_code = 200
     return response
-
-# ------------------------------------------------------------
-# This is a stubbed route to update a product in the catalog
-# The SQL query would be an UPDATE. 
-@products.route('/product', methods = ['PUT'])
-def update_product():
-    product_info = request.json
-    current_app.logger.info(product_info)
-
-    return "Success"
