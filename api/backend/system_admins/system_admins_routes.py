@@ -44,3 +44,53 @@ def get_products():
     response.status_code = 200
     # send the response back to the client
     return response
+
+# ------------------------------------------------------------
+# This is a POST route to add a new product.
+# Remember, we are using POST routes to create new entries
+# in the database. 
+@system_admins.route('/system_updates', methods=['POST'])
+def add_new_product():
+    
+    # In a POST request, there is a 
+    # collecting data from the request object 
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    #extracting the variable
+    update_id = the_data['update_id']
+    data_type = the_data['update_type']
+    release_date = the_data['update_release_date']
+    
+    query = f'''
+        INSERT INTO system_updates (update_id,
+                              update_type,
+                              update_release_date) 
+         VALUES ({str(update_id)}, '{data_type}', {str(release_date)})
+    '''
+    # TODO: Make sure the version of the query above works properly
+    # Constructing the query
+    # query = 'insert into system_updates (update_id, update_type, update_release_date) values ("'
+    # query += str(update_id) + '", "'
+    # query += data_type + '", "'
+    # query += str(release_date) + ')'
+    current_app.logger.info(query)
+
+    # executing and committing the insert statement 
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+    
+    response = make_response("Successfully added product")
+    response.status_code = 200
+    return response
+
+# ------------------------------------------------------------
+# This is a stubbed route to update a product in the catalog
+# The SQL query would be an UPDATE. 
+@products.route('/product', methods = ['PUT'])
+def update_product():
+    product_info = request.json
+    current_app.logger.info(product_info)
+
+    return "Success"
