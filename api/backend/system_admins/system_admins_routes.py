@@ -10,6 +10,7 @@ from flask import make_response
 from flask import current_app
 from backend.db_connection import db
 
+
 #------------------------------------------------------------
 # Create a new Blueprint object, which is a collection of 
 # routes.
@@ -21,7 +22,7 @@ system_admins = Blueprint('system_admins', __name__)
 @system_admins.route('/system_admin', methods=['GET'])
 def get_products():
     query = '''
-        SELECT  user_id, 
+        SELECT * 
         FROM system_admins
     '''
     
