@@ -84,3 +84,4 @@ def add_new_product():
     response = make_response("Successfully added product")
     response.status_code = 200
     return response
+    
