@@ -140,3 +140,18 @@ def create_to_do_list():
     db.get_db().commit()
     
     return make_response(jsonify({"message": "To-do list created"})), 201
+#------------------------------------------------------------
+@students.route('/tasks', methods=['DELETE'])
+def delete_completed_tasks():
+    student_id = request.args.get('student_id')  # Required
+    if not student_id:
+        return make_response(jsonify({"error": "student_id is required"})), 400
+
+    cursor = db.get_db().cursor()
+    cursor.execute('''
+        DELETE FROM Tasks
+        WHERE StudentID = %s AND Status = 'completed'
+    ''', (student_id,))
+    db.get_db().commit()
+    
+    return make_response(jsonify({"message": "Completed tasks deleted"})), 200
