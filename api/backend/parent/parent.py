@@ -79,9 +79,27 @@ def get_sleep_logs():
     current_app.logger.info('GET /sleep_logs route')
     cursor = db.get_db().cursor()
     cursor.execute('''
-    SELECT UserID, StartTime, EndTime, BabyName, SleepID
+    SELECT user_id, StartTime, EndTime, BabyName, SleepID
     FROM sleep_logs
-    ORDER BY BabyName DESC
+    ORDER BY BabyName ASC
+    ''')
+ 
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
+
+#------------------------------------------------------------
+# Gets grocery list items
+@parents.route('/grocery-lists', methods=['GET'])
+def get_grocery_list_items():
+    current_app.logger.info('GET /grocery-lists route')
+    cursor = db.get_db().cursor()
+    cursor.execute('''
+    SELECT user_id, title, created_at, update_at, list_id
+    FROM grocery_lists
+    ORDER BY title ASC
     ''')
  
     theData = cursor.fetchall()
