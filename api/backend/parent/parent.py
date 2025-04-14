@@ -16,21 +16,6 @@ from backend.ml_models.model01 import predict
 parents = Blueprint('parents', __name__)
 
 
-#------------------------------------------------------------
-# Get all parents from the system
-@parents.route('/parents', methods=['GET'])
-def get_all_parents():
-
-    cursor = db.get_db().cursor()
-    cursor.execute('''SELECT id, name, occupation,
-                    age FROM parents
-    ''')
-    
-    theData = cursor.fetchall()
-    
-    the_response = make_response(jsonify(theData))
-    the_response.status_code = 200
-    return the_response
 
 #------------------------------------------------------------
 # Update parent info for parents with particular userID
@@ -89,13 +74,13 @@ def add_task():
 
 #------------------------------------------------------------
 # Gets the sleep logs 
-@parents.route('/sleep_log', methods=['GET'])
-def get_sleep_log():
-    current_app.logger.info('GET /sleep_log route')
+@parents.route('/sleep_logs', methods=['GET'])
+def get_sleep_logs():
+    current_app.logger.info('GET /sleep_logs route')
     cursor = db.get_db().cursor()
     cursor.execute('''
     SELECT UserID, StartTime, EndTime, BabyName, SleepID
-    FROM sleep_log
+    FROM sleep_logs
     ORDER BY BabyName DESC
     ''')
  
