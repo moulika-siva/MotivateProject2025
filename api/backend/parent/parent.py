@@ -111,7 +111,7 @@ def get_grocery_list_items():
 #------------------------------------------------------------
 # Update task frequency
 
-@tasks.route('/tasks',methods=['PUT'])
+@parents.route('/tasks',methods=['PUT'])
 def update_task_frequency():
     current_app.logger.info('PUT /tasks route')
     task_info = request.json
@@ -132,7 +132,7 @@ def update_task_frequency():
 
 #------------------------------------------------------------
 # Delete completed tasks
-@tasks.route('/tasks/completed',methods=['DELETE'])
+@parents.route('/tasks/completed',methods=['DELETE'])
 def delete_completed_tasks():
     current_app.logger.info('DELETE /students/tasks route')
     student_id = request.args.get('student_id')
