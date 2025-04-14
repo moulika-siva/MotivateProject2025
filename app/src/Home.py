@@ -56,7 +56,7 @@ if st.button('Act as Maria, a Decision Maker',
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'decision_maker'
     st.session_state['first_name'] = 'Maria'
-    st.switch_page('pages/10_Decision_Maker_Home.py')
+    st.switch_page('pages/00_Dec_Maker_Home.py')
 
 if st.button('Act as Jacob, a System Administrator', 
             type = 'primary', 
@@ -66,5 +66,11 @@ if st.button('Act as Jacob, a System Administrator',
     st.session_state['first_name'] = 'Jacob'
     st.switch_page('pages/20_Admin_Home.py')
 
-
+if st.button('Act as Bob, a Parent', 
+            type = 'primary', 
+            use_container_width=True):
+    st.session_state['authenticated'] = True
+    st.session_state['role'] = 'parent'
+    st.session_state['first_name'] = 'Bob'
+    st.switch_page('pages/20_Admin_Home.py')
 

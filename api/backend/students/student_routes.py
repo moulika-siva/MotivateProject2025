@@ -68,7 +68,7 @@ def get_student(student_id):
         SELECT student_id, Name 
         FROM students 
         WHERE StudentID = %s
-    ''', (student_id))
+    ''', (student_id,))
     
     theData = cursor.fetchall()
     
@@ -87,7 +87,7 @@ def get_pre_med_regs():
         SELECT ReqID, Description, Status, TargetDate
         FROM PreMedRequirement
         WHERE StudentID = %s
-    ''', (student_id))
+    ''', (student_id,))
     
     requirements = cursor.fetchall()
 
@@ -105,7 +105,7 @@ def get_mcat_chapters():
         SELECT ChapterID, Topic, Status, LastReviewed
         FROM MCATChapter
         WHERE StudentID = %s
-    ''', (student_id))
+    ''', (student_id,))
     
     chapters = cursor.fetchall()
 
@@ -124,7 +124,7 @@ def get_calendar_events():
         FROM Events e
         JOIN StudentEvents se ON e.EventID = se.EventID
         WHERE se.StudentID = %s
-    ''', (student_id))
+    ''', (student_id,))
     
     events = cursor.fetchall()
 
@@ -143,7 +143,7 @@ def create_to_do_list():
     cursor.execute('''
         INSERT INTO ToDoLists (StudentID, Title, CreatedAt)
         VALUES (%s, %s, NOW())
-    ''', (student_id, title))
+    ''', (student_id, title,))
     db.get_db().commit()
     
     the_response = make_response(jsonify())
