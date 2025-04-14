@@ -136,10 +136,10 @@ def get_student_info(course_id):
     # Query to get students enrolled in the specified course
     cursor = db.get_db().cursor()
     query = 
-        SELECT students.student_id, students.name, students.user_id
+        '''SELECT students.student_id, students.name, students.user_id
         FROM students
         WHERE students.course_id = %s
-        ORDER BY students.name
+        ORDER BY students.name'''
     
     
     cursor.execute(query, (course_id,))
