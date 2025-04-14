@@ -46,42 +46,104 @@ def get_products():
     return response
 
 # ------------------------------------------------------------
-# This is a POST route to add a new product.
-# Remember, we are using POST routes to create new entries
-# in the database. 
+# This is a POST route to add a new system update.
 @system_admins.route('/system_updates', methods=['POST'])
-def add_new_product():
-    
-    # In a POST request, there is a 
-    # collecting data from the request object 
-    the_data = request.json
-    current_app.logger.info(the_data)
+def add_new_system_update():
+    try:
+        # Get JSON data from the request
+        the_data = request.json
+        current_app.logger.info(the_data)
 
-    #extracting the variable
-    update_id = the_data['update_id']
-    data_type = the_data['update_type']
-    release_date = the_data['update_release_date']
-    
-    query = f'''
-        INSERT INTO system_updates (update_id,
-                              update_type,
-                              update_release_date) 
-         VALUES ({str(update_id)}, '{data_type}', {str(release_date)})
-    '''
-    # TODO: Make sure the version of the query above works properly
-    # Constructing the query
-    # query = 'insert into system_updates (update_id, update_type, update_release_date) values ("'
-    # query += str(update_id) + '", "'
-    # query += data_type + '", "'
-    # query += str(release_date) + ')'
-    current_app.logger.info(query)
+        # Extract relevant fields
+        update_type = the_data['update_type']
+        release_date = the_data['update_release_date']
 
-    # executing and committing the insert statement 
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-    db.get_db().commit()
+        # Use a parameterized INSERT query (auto-incrementing update_id)
+        query = '''
+            INSERT INTO system_update (type, release_date)
+            VALUES (%s, %s)
+        '''
+
+        # Execute the query safely
+        cursor = db.get_db().cursor()
+        cursor.execute(query, (update_type, release_date))
+        db.get_db().commit()
+
+        response = make_response(jsonify({'message': 'Successfully added system update'}))
+        response.status_code = 201  # Created
+        return response
+
+    except Exception as e:
+        current_app.logger.error(f"Error inserting system update: {str(e)}")
+        response = make_response(jsonify({'error': 'Failed to add system update'}))
+        response.status_code = 500
+        return response
     
-    response = make_response("Successfully added product")
-    response.status_code = 200
+# ------------------------------------------------------------
+# PUT route to update a user's role to 'SystemAdmin'
+@system_admins.route('/make_admin/<int:user_id>', methods=['PUT'])
+def promote_user_to_admin(user_id):
+    try:
+        # Create the SQL UPDATE statement
+        query = f'''
+            UPDATE users
+            SET role = 'SystemAdmin'
+            WHERE user_id = {user_id}
+        '''
+
+        # Log the query for debugging
+        current_app.logger.info(query)
+
+        # Execute the query
+        cursor = db.get_db().cursor()
+        cursor.execute(query)
+        db.get_db().commit()
+
+        # If no rows were affected, the user doesn't exist
+        if cursor.rowcount == 0:
+            response = make_response(jsonify({'error': 'User not found'}))
+            response.status_code = 404
+        else:
+            response = make_response(jsonify({'message': 'User promoted to SystemAdmin'}))
+            response.status_code = 200
+
+    except Exception as e:
+        current_app.logger.error(str(e))
+        response = make_response(jsonify({'error': 'Internal server error'}))
+        response.status_code = 500
+
     return response
-    
+
+# ------------------------------------------------------------
+# DELETE route to remove a row from the cache_data table
+@system_admins.route('/cache_data/<int:cache_id>', methods=['DELETE'])
+def delete_cache_data(cache_id):
+    try:
+        # Create the SQL DELETE statement
+        query = f'''
+            DELETE FROM cache_data
+            WHERE cache_id = {cache_id}
+        '''
+
+        # Log the query for debugging purposes
+        current_app.logger.info(query)
+
+        # Execute the DELETE query
+        cursor = db.get_db().cursor()
+        cursor.execute(query)
+        db.get_db().commit()
+
+        # Check if a row was actually deleted
+        if cursor.rowcount == 0:
+            response = make_response(jsonify({'error': 'Cache data not found'}))
+            response.status_code = 404
+        else:
+            response = make_response(jsonify({'message': 'Cache data deleted successfully'}))
+            response.status_code = 200
+
+    except Exception as e:
+        current_app.logger.error(str(e))
+        response = make_response(jsonify({'error': 'Internal server error'}))
+        response.status_code = 500
+
+    return response
