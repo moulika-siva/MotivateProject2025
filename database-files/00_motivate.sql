@@ -15,8 +15,6 @@ CREATE TABLE IF NOT EXISTS `motivate`.`users` (
   `role` ENUM('Student', 'Professor', 'SystemAdmin', 'Parent') NULL DEFAULT NULL,
   `email_address` VARCHAR(100) NULL DEFAULT NULL,
   PRIMARY KEY (`user_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -28,8 +26,6 @@ CREATE TABLE IF NOT EXISTS `motivate`.`professors` (
   `name` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`user_id`),
   FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -39,8 +35,6 @@ CREATE TABLE IF NOT EXISTS `motivate`.`system_admins` (
   `user_id` INT NOT NULL,
   PRIMARY KEY (`user_id`)
   FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -53,8 +47,6 @@ CREATE TABLE IF NOT EXISTS `motivate`.`parents` (
   `age` INT NULL DEFAULT NULL,
   PRIMARY KEY (`user_id`)
   FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -66,8 +58,6 @@ CREATE TABLE IF NOT EXISTS `motivate`.`courses` (
   `semester` VARCHAR(20) NULL DEFAULT NULL,
   `priority` INT NULL DEFAULT NULL,
   PRIMARY KEY (`course_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -81,8 +71,6 @@ CREATE TABLE IF NOT EXISTS `motivate`.`students` (
   PRIMARY KEY (`student_id`),
   FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`),
   FOREIGN KEY (`course_id`) REFERENCES `courses`(`course_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -95,8 +83,6 @@ CREATE TABLE IF NOT EXISTS `motivate`.`assignments` (
   `due_date` DATE NULL DEFAULT NULL,
   PRIMARY KEY (`assign_id`)
   FOREIGN KEY (`course_id`) REFERENCES `courses`(`course_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -110,8 +96,6 @@ CREATE TABLE IF NOT EXISTS `motivate`.`calendar_events` (
   `user_id` INT,
   PRIMARY KEY (`calendar_event_id`),
   FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -124,8 +108,6 @@ CREATE TABLE IF NOT EXISTS `motivate`.`club_events` (
   `date` DATE NULL DEFAULT NULL,
   PRIMARY KEY (`club_event_id`),
   FOREIGN KEY (`club_event_id`) REFERENCES `calendar_events`(`calendar_event_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -139,8 +121,6 @@ CREATE TABLE IF NOT EXISTS `motivate`.`pre_med_requirements` (
   `target_date` DATE NULL DEFAULT NULL,
   PRIMARY KEY (`req_id`),
   FOREIGN KEY (`student_id`) REFERENCES `students`(`student_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -154,8 +134,6 @@ CREATE TABLE IF NOT EXISTS `motivate`.`mcat_chapters` (
   `last_reviewed` DATE NULL DEFAULT NULL,
   PRIMARY KEY (`chapter_id`)
   FOREIGN KEY (`student_id`) REFERENCES `students`(`student_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -170,8 +148,6 @@ CREATE TABLE IF NOT EXISTS `motivate`.`lesson_plans` (
   PRIMARY KEY (`plan_id`),
   FOREIGN KEY (`course_id`) REFERENCES `courses`(`course_id`)
   FOREIGN KEY (`professor_id`) REFERENCES `professors`(`user_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -184,8 +160,6 @@ CREATE TABLE IF NOT EXISTS `motivate`.`exams` (
   `type` ENUM('Midterm', 'Final', 'Quiz') NULL DEFAULT NULL,
   PRIMARY KEY (`exam_id`),
   FOREIGN KEY (`course_id`) REFERENCES `courses`(`course_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -197,8 +171,6 @@ CREATE TABLE IF NOT EXISTS `motivate`.`system_commands` (
   `status` ENUM('Active', 'Maintenance') NULL DEFAULT 'Active',
   `last_updated` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`system_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -211,8 +183,6 @@ CREATE TABLE IF NOT EXISTS `motivate`.`reports` (
   `data` TEXT NULL DEFAULT NULL,
   PRIMARY KEY (`report_id`),
   FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -225,8 +195,6 @@ CREATE TABLE IF NOT EXISTS `motivate`.`cache_data` (
   `data_type` VARCHAR(50) NULL DEFAULT NULL,
   PRIMARY KEY (`cache_id`)
   FOREIGN KEY (`system_id`) REFERENCES `system_commands`(`system_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -238,8 +206,6 @@ CREATE TABLE IF NOT EXISTS `motivate`.`system_update` (
   `release_date` DATE NULL DEFAULT NULL,
   PRIMARY KEY (`update_id`)
   FOREIGN KEY (`update_id`) REFERENCES `system_commands`(`system_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -251,8 +217,6 @@ CREATE TABLE IF NOT EXISTS `motivate`.`issues` (
   `type` VARCHAR(50) NULL DEFAULT NULL,
   `description` TEXT NULL DEFAULT NULL,
   PRIMARY KEY (`issue_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -265,8 +229,6 @@ CREATE TABLE IF NOT EXISTS `motivate`.`tickets` (
   `status` ENUM('Open', 'InProgress', 'Resolved') NULL DEFAULT NULL,
   `description` TEXT NULL DEFAULT NULL,
   PRIMARY KEY (`ticket_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -280,8 +242,6 @@ CREATE TABLE IF NOT EXISTS `motivate`.`todo_list` (
   `updated_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`list_id`)
   FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -295,8 +255,6 @@ CREATE TABLE IF NOT EXISTS `motivate`.`tasks` (
   `frequency` ENUM('Pending', 'Completed') NULL DEFAULT 'Pending',
   PRIMARY KEY (`task_id`),
   FOREIGN KEY (`list_id`) REFERENCES `todo_list`(`list_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -310,8 +268,6 @@ CREATE TABLE IF NOT EXISTS `motivate`.`grocery_lists` (
   `updated_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`list_id`),
   FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -325,8 +281,6 @@ CREATE TABLE IF NOT EXISTS `motivate`.`grocery_items` (
   `purchase_status` ENUM('Pending', 'Purchased') NULL DEFAULT 'Pending',
   PRIMARY KEY (`item_id`)
   FOREIGN KEY (`list_id`) REFERENCES `grocery_lists`(`list_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -340,8 +294,6 @@ CREATE TABLE IF NOT EXISTS `motivate`.`sleep_logs` (
   `baby_name` VARCHAR(100) NULL DEFAULT NULL,
   PRIMARY KEY (`sleep_id`)
   FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
