@@ -11,7 +11,7 @@ SideBarLinks()
 st.title('System Update Page')
 
 st.write('\n\n')
-st.write('## Model 1 Maintenance')
+st.write('## Update Actions')
 
 st.button("Add ID", 
             type = 'primary', 
