@@ -147,3 +147,107 @@ def delete_cache_data(cache_id):
         response.status_code = 500
 
     return response
+
+# ------------------------------------------------------------
+# This is a POST route to add a new ticket.
+@system_admins.route('/tickets', methods=['POST'])
+def add_new_ticket():
+    try:
+        # Get JSON data from the request
+        the_data = request.json
+        current_app.logger.info(the_data)
+
+        # Extract relevant fields
+        title = the_data['title']
+        date = the_data['date']
+        status = the_data['status']  # should be 'Open', 'InProgress', or 'Resolved'
+        description = the_data['description']
+
+        # Parameterized INSERT query (ticket_id auto-increments)
+        query = '''
+            INSERT INTO tickets (title, date, status, description)
+            VALUES (%s, %s, %s, %s)
+        '''
+
+        # Execute the insert
+        cursor = db.get_db().cursor()
+        cursor.execute(query, (title, date, status, description))
+        db.get_db().commit()
+
+        response = make_response(jsonify({'message': 'Ticket successfully created'}))
+        response.status_code = 201  # Created
+        return response
+
+    except Exception as e:
+        current_app.logger.error(f"Error adding ticket: {str(e)}")
+        response = make_response(jsonify({'error': 'Failed to create ticket'}))
+        response.status_code = 500
+        return response
+
+# ------------------------------------------------------------
+# This is a PUT route to update the status of a ticket to 'Resolved'
+@system_admins.route('/tickets/resolve/<int:ticket_id>', methods=['PUT'])
+def resolve_ticket(ticket_id):
+    try:
+        # Create the UPDATE query to change ticket status to 'Resolved'
+        query = '''
+            UPDATE tickets
+            SET status = 'Resolved'
+            WHERE ticket_id = %s
+        '''
+
+        # Execute the update
+        cursor = db.get_db().cursor()
+        cursor.execute(query, (ticket_id,))
+        db.get_db().commit()
+
+        if cursor.rowcount == 0:
+            response = make_response(jsonify({'error': 'Ticket not found'}))
+            response.status_code = 404
+        else:
+            response = make_response(jsonify({'message': 'Ticket successfully resolved'}))
+            response.status_code = 200
+
+        return response
+
+    except Exception as e:
+        current_app.logger.error(f"Error resolving ticket: {str(e)}")
+        response = make_response(jsonify({'error': 'Failed to resolve ticket'}))
+        response.status_code = 500
+        return response
+
+# ------------------------------------------------------------
+# This is a DELETE route to remove old reports from the database.
+@system_admins.route('/reports/delete_old', methods=['DELETE'])
+def delete_old_reports():
+    try:
+        # Get the cutoff date from the request (e.g., delete reports older than this date)
+        the_data = request.json
+        cutoff_date = the_data['cutoff_date']  # format: 'YYYY-MM-DD'
+
+        # Parameterized DELETE query
+        query = '''
+            DELETE FROM reports
+            WHERE created_at < %s
+        '''
+
+        # Log the query for debugging
+        current_app.logger.info(f"Deleting reports before: {cutoff_date}")
+
+        # Execute the query
+        cursor = db.get_db().cursor()
+        cursor.execute(query, (cutoff_date,))
+        db.get_db().commit()
+
+        deleted_count = cursor.rowcount
+        response = make_response(jsonify({
+            'message': f'Successfully deleted {deleted_count} old report(s)'
+        }))
+        response.status_code = 200
+        return response
+
+    except Exception as e:
+        current_app.logger.error(f"Error deleting old reports: {str(e)}")
+        response = make_response(jsonify({'error': 'Failed to delete old reports'}))
+        response.status_code = 500
+        return response
