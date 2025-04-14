@@ -442,7 +442,6 @@ INSERT INTO `courses` (`course_id`, `name`, `semester`, `priority`) VALUES (50, 
 # Dumping data for table 'students'
 #
 
-s
 INSERT INTO `students` (`student_id`, `course_id`, `name`, `user_id`) VALUES (2, 46, 'Skyler Davis', 5);
 INSERT INTO `students` (`student_id`, `course_id`, `name`, `user_id`) VALUES (3, 26, 'Peyton Moore', 12);
 INSERT INTO `students` (`student_id`, `course_id`, `name`, `user_id`) VALUES (4, 47, 'Jordan Davis', 19);
@@ -507,7 +506,7 @@ INSERT INTO `assignments` (`assign_id`, `course_id`, `description`, `due_date`) 
 INSERT INTO `assignments` (`assign_id`, `course_id`, `description`, `due_date`) VALUES (2, 33, 'Assignment 2 for Course 33', '2024-07-04');
 INSERT INTO `assignments` (`assign_id`, `course_id`, `description`, `due_date`) VALUES (3, 14, 'Assignment 3 for Course 14', '2025-03-12');
 INSERT INTO `assignments` (`assign_id`, `course_id`, `description`, `due_date`) VALUES (4, 5, 'Assignment 4 for Course 5', '2024-08-14');
-INSERT INTO `assignmenats` (`assign_id`, `course_id`, `description`, `due_date`) VALUES (5, 5, 'Assignment 5 for Course 5', '2025-05-11');
+INSERT INTO `assignments` (`assign_id`, `course_id`, `description`, `due_date`) VALUES (5, 5, 'Assignment 5 for Course 5', '2025-05-11');
 INSERT INTO `assignments` (`assign_id`, `course_id`, `description`, `due_date`) VALUES (6, 43, 'Assignment 6 for Course 43', '2025-06-17');
 INSERT INTO `assignments` (`assign_id`, `course_id`, `description`, `due_date`) VALUES (7, 39, 'Assignment 7 for Course 39', '2024-04-27');
 INSERT INTO `assignments` (`assign_id`, `course_id`, `description`, `due_date`) VALUES (8, 2, 'Assignment 8 for Course 2', '2024-04-08');
