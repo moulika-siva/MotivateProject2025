@@ -17,21 +17,18 @@ decision_maker = Blueprint('decision_maker', __name__)
 
 
 #------------------------------------------------------------
-# Get the courses and average grades of the students from 
-#   the system
-@decision_maker.route('/decision_maker/gradebook', methods=['GET'])
+# Get the courses 
+@decision_maker.route('/decision_maker/courselist', methods=['GET'])
 def get_grades():
     cursor = db.get_db().cursor()
     
     # Get the courses and average grades of the students from the system
     cursor.execute(
-        '''SELECT student_id, students_name, 
-               courses.name, AVG(grades.grade) as average_grade
+        '''SELECT student_id, students_name, courses.name,
         FROM students
-        JOIN grades ON student_id = grades.student_id
         JOIN courses ON grades.course_id = courses.id
         GROUP BY students.id, courses.id
-        ORDER BY students.last_name, students.first_name, courses.course_name'''
+        ORDER BY students_name, courses.course_name'''
     )
     
     grade_data = cursor.fetchall()
