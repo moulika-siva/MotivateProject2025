@@ -66,18 +66,41 @@ def get_one_parent(userID):
     the_response.status_code = 200
     return the_response
 
+
 #------------------------------------------------------------
-# Makes use of the very simple ML model in to predict a value
-# and returns it to the user
-@parents.route('/prediction/<var01>/<var02>', methods=['GET'])
-def predict_value(var01, var02):
-    current_app.logger.info(f'var01 = {var01}')
-    current_app.logger.info(f'var02 = {var02}')
+# Adds a new task for the parent
+@parents.route('/tasks', methods=['POST'])
+def add_task():
+    current_app.logger.info('POST /tasks route')
+    task_info = request.json
+    list_id = task_info['list_id']
+    description = task_info['description']
+    duedate = task_info['duedate']
+    frequency = task_info['frequency']
+    completionstatus = task_info['completionstatus']
+    task_id = task_info['task_id'] 
+    
+    query = 'INSERT INTO tasks (list_id, description, duedate, frequency, completionstatus, task_id) VALUES (%s, %s, %s, %s, %s, %s)'
+    data = (list_id, description, duedate, frequency, completionstatus, task_id)
+    cursor = db.get_db().cursor()
+    cursor.execute(query, data)
+    db.get_db().commit()
+    return 'new task added!', 201
 
-    returnVal = predict(var01, var02)
-    return_dict = {'result': returnVal}
-
-    the_response = make_response(jsonify(return_dict))
+#------------------------------------------------------------
+# Gets the sleep logs 
+@parents.route('/sleep_log', methods=['GET'])
+def get_sleep_log():
+    current_app.logger.info('GET /sleep_log route')
+    cursor = db.get_db().cursor()
+    cursor.execute('''
+    SELECT UserID, StartTime, EndTime, BabyName, SleepID
+    FROM sleep_log
+    ORDER BY BabyName DESC
+    ''')
+ 
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
     the_response.status_code = 200
-    the_response.mimetype = 'application/json'
     return the_response
