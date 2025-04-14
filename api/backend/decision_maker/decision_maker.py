@@ -25,13 +25,13 @@ def get_grades():
     
     # Get the courses and average grades of the students from the system
     cursor.execute(
-        SELECT student_id, students_name, 
+        '''SELECT student_id, students_name, 
                courses.name, AVG(grades.grade) as average_grade
         FROM students
         JOIN grades ON student_id = grades.student_id
         JOIN courses ON grades.course_id = courses.id
         GROUP BY students.id, courses.id
-        ORDER BY students.last_name, students.first_name, courses.course_name
+        ORDER BY students.last_name, students.first_name, courses.course_name'''
     )
     
     grade_data = cursor.fetchall()
@@ -135,11 +135,12 @@ def get_student_info(course_id):
     
     # Query to get students enrolled in the specified course
     cursor = db.get_db().cursor()
-    query = 
-        SELECT students.student_id, students.name, students.user_id
-        FROM students
-        WHERE students.course_id = %s
-        ORDER BY students.name
+    query = (
+    '''SELECT students.student_id, students.name, students.user_id
+       FROM students
+       WHERE students.course_id = %s
+       ORDER BY students.name'''
+    )
     
     
     cursor.execute(query, (course_id,))
