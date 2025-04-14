@@ -9,7 +9,12 @@ st.set_page_config(layout = 'wide')
 # Show appropriate sidebar links for the role of the currently logged in user
 SideBarLinks()
 
-st.title(f"Welcome student, {st.session_state['Name']}.")
+st.title(f"Welcome student, {st.session_state['first_name']}.")
 st.write('')
 st.write('')
 st.write('### Organize your personal/academic tasks!')
+
+if st.button('View your grades', 
+             type='primary',
+             use_container_width=True):
+  st.switch_page('pages/05_View_Grades.py')
