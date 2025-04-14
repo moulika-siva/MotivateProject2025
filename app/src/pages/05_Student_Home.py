@@ -12,7 +12,7 @@ SideBarLinks()
 st.title(f"Welcome student, {st.session_state['first_name']}.")
 st.write('')
 st.write('')
-st.write('### Organize your personal/academic tasks!')
+st.write('### Organize your personal/academic life!')
 
 if st.button('View your grades', 
              type='primary',
