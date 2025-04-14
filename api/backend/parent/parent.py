@@ -1,5 +1,5 @@
 ########################################################
-# Sample customers blueprint of endpoints
+# Sample parent blueprint of endpoints
 # Remove this file if you are not using it in your project
 ########################################################
 from flask import Blueprint
@@ -13,17 +13,17 @@ from backend.ml_models.model01 import predict
 #------------------------------------------------------------
 # Create a new Blueprint object, which is a collection of 
 # routes.
-customers = Blueprint('customers', __name__)
+parents = Blueprint('parents', __name__)
 
 
 #------------------------------------------------------------
-# Get all customers from the system
-@customers.route('/customers', methods=['GET'])
-def get_customers():
+# Get all parents from the system
+@parents.route('/parents', methods=['GET'])
+def get_all_parents():
 
     cursor = db.get_db().cursor()
-    cursor.execute('''SELECT id, company, last_name,
-                    first_name, job_title, business_phone FROM customers
+    cursor.execute('''SELECT id, name, occupation,
+                    age FROM parents
     ''')
     
     theData = cursor.fetchall()
@@ -33,32 +33,32 @@ def get_customers():
     return the_response
 
 #------------------------------------------------------------
-# Update customer info for customer with particular userID
+# Update parent info for parents with particular userID
 #   Notice the manner of constructing the query.
-@customers.route('/customers', methods=['PUT'])
-def update_customer():
-    current_app.logger.info('PUT /customers route')
-    cust_info = request.json
-    cust_id = cust_info['id']
-    first = cust_info['first_name']
-    last = cust_info['last_name']
-    company = cust_info['company']
+@parents.route('/parents', methods=['PUT'])
+def update_parent():
+    current_app.logger.info('PUT /parents route')
+    parent_info = request.json
+    parent_id = parent_info['id']
+    name = parent_info['name']
+    occupation = parent_info['occupation']
+    age = parent_info['age']
 
-    query = 'UPDATE customers SET first_name = %s, last_name = %s, company = %s where id = %s'
-    data = (first, last, company, cust_id)
+    query = 'UPDATE parents SET name = %s, occupation = %s, age = %s where id = %s'
+    data = (name, occupation, age, parent_id)
     cursor = db.get_db().cursor()
     r = cursor.execute(query, data)
     db.get_db().commit()
-    return 'customer updated!'
+    return 'parent updated!'
 
 #------------------------------------------------------------
-# Get customer detail for customer with particular userID
+# Get parent detail for parents with particular userID
 #   Notice the manner of constructing the query. 
-@customers.route('/customers/<userID>', methods=['GET'])
-def get_customer(userID):
-    current_app.logger.info('GET /customers/<userID> route')
+@parents.route('/parents/<userID>', methods=['GET'])
+def get_one_parent(userID):
+    current_app.logger.info('GET /parents/<userID> route')
     cursor = db.get_db().cursor()
-    cursor.execute('SELECT id, first_name, last_name FROM customers WHERE id = {0}'.format(userID))
+    cursor.execute('SELECT id, name, occupation, age FROM parents WHERE id = {0}'.format(userID))
     
     theData = cursor.fetchall()
     
@@ -69,7 +69,7 @@ def get_customer(userID):
 #------------------------------------------------------------
 # Makes use of the very simple ML model in to predict a value
 # and returns it to the user
-@customers.route('/prediction/<var01>/<var02>', methods=['GET'])
+@parents.route('/prediction/<var01>/<var02>', methods=['GET'])
 def predict_value(var01, var02):
     current_app.logger.info(f'var01 = {var01}')
     current_app.logger.info(f'var02 = {var02}')
