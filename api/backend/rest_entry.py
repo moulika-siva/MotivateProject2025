@@ -4,7 +4,7 @@ from backend.db_connection import db
 from backend.students.student_routes import students
 from backend.system_admins.system_admins_routes import system_admins
 from backend.decision_maker.decision_maker_routes import decision_maker
-from backend.parents.parents_routes import parents
+from backend.parent.parent_routes import parent
 from backend.simple.simple_routes import simple_routes
 import os
 from dotenv import load_dotenv
