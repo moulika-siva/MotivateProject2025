@@ -23,10 +23,10 @@ def get_students():
 
     cursor = db.get_db().cursor()
     cursor.execute('''
-        SELECT s.StudentID, u.Name, u.Email, u.Role, c.Name AS CourseName
-        FROM Student s
-        JOIN User u ON s.UserID = u.UserID
-        LEFT JOIN Course c ON s.CourseID = c.CourseID
+        SELECT s.student_id, u.name, u.email_address, u.role, c.name AS CourseName
+        FROM students s
+        JOIN users u ON s.user_id = u.user_id
+        LEFT JOIN courses c ON s.course_id = c.course_id
     ''')
     
     theData = cursor.fetchall()
@@ -41,17 +41,17 @@ def get_students():
 def update_student():
     current_app.logger.info('PUT /students route')
     student_info = request.json
-    student_id = student_info['StudentID']
-    name = student_info.get('Name')
-    course_id = student_info.get('CourseID')
+    student_id = student_info['student_id']
+    name = student_info.get('name')
+    course_id = student_info.get('course_id')
 
     
     cursor = db.get_db().cursor()
     update_data.append(student_id)
     query = f'''
-        UPDATE Student
+        UPDATE students
         SET {', '.join(update_fields)}
-        WHERE StudentID = %s
+        WHERE student_id = %s
         '''
     cursor.execute(query, data)
     db.get_db().commit()
@@ -65,9 +65,9 @@ def get_student(student_id):
     cursor = db.get_db().cursor()
     
     cursor.execute('''
-        SELECT student_id, Name 
+        SELECT student_id, name 
         FROM students 
-        WHERE StudentID = %s
+        WHERE student_id = %s
     ''', (student_id,))
     
     theData = cursor.fetchall()
@@ -84,9 +84,9 @@ def get_pre_med_regs():
     
     cursor = db.get_db().cursor()
     cursor.execute('''
-        SELECT ReqID, Description, Status, TargetDate
-        FROM PreMedRequirement
-        WHERE StudentID = %s
+        SELECT req_id, description, status, target_date
+        FROM pre_med_requirements
+        WHERE student_id = %s
     ''', (student_id,))
     
     requirements = cursor.fetchall()
@@ -102,9 +102,9 @@ def get_mcat_chapters():
     
     cursor = db.get_db().cursor()
     cursor.execute('''
-        SELECT ChapterID, Topic, Status, LastReviewed
-        FROM MCATChapter
-        WHERE StudentID = %s
+        SELECT chapter_id, topic, status, last_reviewed
+        FROM mcat_chapters
+        WHERE student_id = %s
     ''', (student_id,))
     
     chapters = cursor.fetchall()
@@ -116,15 +116,15 @@ def get_mcat_chapters():
 # Get calender events for student
 @students.route('/students/calendar-events', methods=['GET'])
 def get_calendar_events():
-    student_id = request.args.get('student_id')  
+    student_id = request.args.get('user_id')  
     
     cursor = db.get_db().cursor()
     cursor.execute('''
-        SELECT e.EventID, e.EventName, e.EventDate, e.EventType
-        FROM Events e
-        JOIN StudentEvents se ON e.EventID = se.EventID
-        WHERE se.StudentID = %s
-    ''', (student_id,))
+        SELECT e.calendar_event_id, e.description, e.date_time, e.type
+        FROM calendar_events e
+        JOIN club_events se ON e.calendar_event_id = se.club_event_id
+        WHERE e.user_id = %s
+    ''', (user_id,))
     
     events = cursor.fetchall()
 
@@ -141,7 +141,7 @@ def create_to_do_list():
     
     cursor = db.get_db().cursor()
     cursor.execute('''
-        INSERT INTO ToDoLists (StudentID, Title, CreatedAt)
+        INSERT INTO todo_list (list_id, title, due_date)
         VALUES (%s, %s, NOW())
     ''', (student_id, title,))
     db.get_db().commit()
@@ -157,8 +157,8 @@ def delete_completed_tasks():
     
     cursor = db.get_db().cursor()
     cursor.execute('''
-        DELETE FROM Tasks
-        WHERE StudentID = %s AND CompletionStatus = 'completed'
+        DELETE FROM tasks
+        WHERE student_id = %s AND frequency = 'completed'
     ''', (student_id,))
     db.get_db().commit()
     
