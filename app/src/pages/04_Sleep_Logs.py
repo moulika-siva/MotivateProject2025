@@ -1,22 +1,56 @@
 import streamlit as st
 import pandas as pd
-import requests
+from datetime import datetime
 
-# Simulated sleep log data (replace with requests.get() if using real API)
+# Simulated sleep log data with start and end times
 sleep_logs_data = [
-    {"child_id": 1, "child_name": "Aiden Smith", "log_date": "2024-04-01", "hours_slept": 9.0},
-    {"child_id": 2, "child_name": "Lily Johnson", "log_date": "2024-04-01", "hours_slept": 7.5},
-    {"child_id": 3, "child_name": "Ethan Lee", "log_date": "2024-04-01", "hours_slept": 8.0},
-    {"child_id": 1, "child_name": "Aiden Smith", "log_date": "2024-04-02", "hours_slept": 9.2},
-    {"child_id": 2, "child_name": "Lily Johnson", "log_date": "2024-04-02", "hours_slept": 7.0},
-    {"child_id": 3, "child_name": "Ethan Lee", "log_date": "2024-04-02", "hours_slept": 8.3},
-    {"child_id": 1, "child_name": "Aiden Smith", "log_date": "2024-04-03", "hours_slept": 8.9},
-    {"child_id": 2, "child_name": "Lily Johnson", "log_date": "2024-04-03", "hours_slept": 6.5},
-    {"child_id": 3, "child_name": "Ethan Lee", "log_date": "2024-04-03", "hours_slept": 8.7},
+    {
+        "child_id": 1,
+        "child_name": "Aiden Smith",
+        "start_sleep": "2024-04-01 21:00",
+        "end_sleep": "2024-04-02 06:00"
+    },
+    {
+        "child_id": 2,
+        "child_name": "Lily Johnson",
+        "start_sleep": "2024-04-01 22:00",
+        "end_sleep": "2024-04-02 05:30"
+    },
+    {
+        "child_id": 3,
+        "child_name": "Ethan Lee",
+        "start_sleep": "2024-04-01 20:45",
+        "end_sleep": "2024-04-02 05:00"
+    },
+    {
+        "child_id": 1,
+        "child_name": "Aiden Smith",
+        "start_sleep": "2024-04-02 21:15",
+        "end_sleep": "2024-04-03 06:30"
+    },
+    {
+        "child_id": 2,
+        "child_name": "Lily Johnson",
+        "start_sleep": "2024-04-02 21:45",
+        "end_sleep": "2024-04-03 05:45"
+    },
+    {
+        "child_id": 3,
+        "child_name": "Ethan Lee",
+        "start_sleep": "2024-04-02 21:00",
+        "end_sleep": "2024-04-03 06:00"
+    }
 ]
 
 # Convert to DataFrame
 sleep_df = pd.DataFrame(sleep_logs_data)
+
+# Convert strings to datetime
+sleep_df["start_sleep"] = pd.to_datetime(sleep_df["start_sleep"])
+sleep_df["end_sleep"] = pd.to_datetime(sleep_df["end_sleep"])
+
+# Calculate sleep length in hours
+sleep_df["sleep_length"] = (sleep_df["end_sleep"] - sleep_df["start_sleep"]).dt.total_seconds() / 3600
 
 # App title
 st.title("Sleep Log Viewer")
@@ -34,11 +68,9 @@ else:
 
 # Display table
 st.header(f"Sleep Logs{' for ' + selected_child if selected_child != 'All Children' else ''}")
-st.dataframe(filtered_df[["child_name", "log_date", "hours_slept"]].rename(columns={
+st.dataframe(filtered_df[["child_name", "start_sleep", "end_sleep", "sleep_length"]].rename(columns={
     "child_name": "Child Name",
-    "log_date": "Date",
-    "hours_slept": "Hours Slept"
+    "start_sleep": "Start Time",
+    "end_sleep": "End Time",
+    "sleep_length": "Sleep Length (hrs)"
 }))
-
-# Example (commented out) if you want to switch to API:
-# sleep_logs_data = requests.get('http://api:3111/sleep-logs').json()
