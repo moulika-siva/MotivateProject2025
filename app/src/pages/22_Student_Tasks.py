@@ -1,3 +1,4 @@
+import requests
 import streamlit as st
 import pandas as pd
 
@@ -7,10 +8,10 @@ st.title("Student Tasks")
 #Hardcoded task data
 if "tasks_data" not in st.session_state:
     st.session_state.tasks_data = [
-        {"student_id": 1, "first_name": "Lana", "last_name": "Martin", "course": "GenChem", "task": "Lab Report 1", "status": "Incomplete"},
-        {"student_id": 1, "first_name": "Lana", "last_name": "Martin", "course": "Bio", "task": "Animals HW", "status": "Complete"},
-        {"student_id": 1, "first_name": "Lana", "last_name": "Martin", "course": "Chem", "task": "Chapter 3 Notes", "status": "Incomplete"},
-        {"student_id": 1, "first_name": "Lana", "last_name": "Martin", "course": "Orgo", "task": "Molecules Quiz", "status": "Incomplete"},
+        {"user_id": 1, "first_name": "Lana", "last_name": "Martin", "course": "GenChem", "task": "Lab Report 1", "status": "Incomplete"},
+        {"user_id": 1, "first_name": "Lana", "last_name": "Martin", "course": "Bio", "task": "Animals HW", "status": "Complete"},
+        {"user_id": 1, "first_name": "Lana", "last_name": "Martin", "course": "Chem", "task": "Chapter 3 Notes", "status": "Incomplete"},
+        {"user_id": 1, "first_name": "Lana", "last_name": "Martin", "course": "Orgo", "task": "Molecules Quiz", "status": "Incomplete"},
     ]
 
 
@@ -44,6 +45,19 @@ for idx, row in filtered_df.iterrows():
 
 #Summary
 st.write(f"Total Remaining Tasks: {len(filtered_df)}")
+
+#Button to delete completed tasks from the backend
+#Functioning DELETE route that deletes task from database
+st.markdown("---")
+st.subheader("🧹 Clean Up")
+if st.button("Delete Completed Tasks from Database"):
+    response = requests.delete("http://web-api:4000/s/students/tasks", params={"user_id": 1})
+    if response.status_code == 200:
+        st.success("✅ Completed tasks deleted from database.")
+    else:
+        st.error(response)
+
+
 
 # Accounts for the following user story:
 # "As a biology student, I need to be able to keep a list of assignments for my major classes 
