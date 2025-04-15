@@ -4,28 +4,24 @@ logger = logging.getLogger(__name__)
 import streamlit as st
 from modules.nav import SideBarLinks
 
-st.set_page_config(layout = 'wide')
-
 # Show appropriate sidebar links for the role of the currently logged in user
 SideBarLinks()
 
-st.title(f"Welcome student, {st.session_state['first_name']}.")
-st.write('')
-st.write('')
-st.write('### Organize your personal/academic life!')
+# Page Title
+st.markdown("# Parent Task Manager")
+st.write("Select an action below to manage your tasks, sleep logs, and more.")
 
-if st.button('CALENDAR', 
+if st.button('Grocery List', 
              type='primary',
              use_container_width=True):
-  st.switch_page('pages/24_Student_Cal.py')
+  st.switch_page('pages/02_Grocery_List.py')
 
-if st.button('TASKS', 
+if st.button('Tasks', 
              type='primary', 
              use_container_width=True):
-  st.switch_page('pages/22_Student_Tasks.py')
+  st.switch_page('pages/03_Tasks.py')
 
-if st.button('MCAT', 
+if st.button('Sleep Logs', 
              type='primary', 
              use_container_width=True):
-  st.switch_page('pages/23_MCAT.py')
-
+  st.switch_page('pages/04_Sleep_Logs.py')
