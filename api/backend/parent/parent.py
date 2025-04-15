@@ -107,3 +107,21 @@ def get_grocery_list_items():
     the_response = make_response(jsonify(theData))
     the_response.status_code = 200
     return the_response
+#------------------------------------------------------------
+# creates a to do list for the parent
+@parents.route('/todo-lists', methods=['POST'])
+def create_todo_list():
+    todo_info = request.json
+    user_id = todo_info['user_id']
+    title = todo_info['title']
+    created_at = todo_info['created_at']
+    updated_at = todo_info['updated_at']
+    list_id = todo_info['list_id']
+    
+    query = 'INSERT INTO todo_lists (user_id, title, created_at, updated_at, list_id) VALUES (%s, %s, %s, %s, %s)'
+    data = (user_id, title, created_at, updated_at, list_id)
+    cursor = db.get_db().cursor()
+    cursor.execute(query, data)
+    db.get_db().commit()
+    return 'To-do list created!', 201
+
