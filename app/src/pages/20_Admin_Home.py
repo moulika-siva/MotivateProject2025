@@ -20,3 +20,8 @@ if st.button('Update User to System Admin',
              type='primary',
              use_container_width=True):
   st.switch_page('pages/25_Change_Role.py')
+
+if st.button('Delete Old Cache Data', 
+             type='primary',
+             use_container_width=True):
+  st.switch_page('pages/26_Delete_Cache_Data.py')

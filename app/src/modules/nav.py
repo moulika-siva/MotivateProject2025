@@ -58,6 +58,9 @@ def UpdateSystemNav():
 def ChangeUserRole():
     st.sidebar.page_link("pages/25_Change_Role.py", label="Change to System Admin", icon="🔄")
 
+def DeleteCacheData():
+    st.sidebar.page_link("pages/26_Delete_Cache_Data.py", label="Delete Cache Data", icon="␡")
+
 
 # --------------------------------Links Function -----------------------------------------------
 def SideBarLinks(show_home=False):
@@ -93,10 +96,11 @@ def SideBarLinks(show_home=False):
             ClassificationNav()
 
         # If the user is an administrator, give them access to the administrator pages
-        if st.session_state["role"] == "administrator":
+        if st.session_state["role"] == "system_adminis":
             AdminPageNav()
             UpdateSystemNav()
             ChangeUserRole()
+            DeleteCacheData()
 
     # Always show the About page at the bottom of the list of links
     AboutPageNav()
