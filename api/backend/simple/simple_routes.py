@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 from flask import Blueprint, request, jsonify, make_response, current_app, redirect, url_for
 import json
 from backend.db_connection import db
@@ -47,5 +46,3 @@ def affirmation():
 @simple_routes.route('/message')
 def mesage():
     return redirect(url_for(affirmation))
-=======
->>>>>>> Stashed changes

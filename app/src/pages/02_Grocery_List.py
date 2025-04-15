@@ -4,11 +4,7 @@ import matplotlib.pyplot as plt
 import plotly.express as px
 from PIL import Image
 
-<<<<<<< Updated upstream
 def add_logo(logo_path, width=100):  # default width if needed
-=======
-def add_logo(logo_path, width=100):  # default width
->>>>>>> Stashed changes
     logo = Image.open(logo_path)
     st.image(logo, width=width)
 
@@ -22,7 +18,7 @@ st.header('GROCERY LIST')
 add_logo('assets/bob.png', width=100)
 
 # welcome message personalized for bob
-st.write(f"### Hi, {st.session_state['first_name']}.")
+st.write(f"### Hi, Bob.")
 
 # display section for bob's grocery lists of the week
 grocery_list = pd.DataFrame({
@@ -47,7 +43,3 @@ purchasestatus_summary=pd.DataFrame({
     })
 
 st.table(purchasestatus_summary)
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes

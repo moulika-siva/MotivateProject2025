@@ -25,7 +25,3 @@ if st.button('Sleep Logs',
              type='primary', 
              use_container_width=True):
   st.switch_page('pages/04_Sleep_Logs.py')
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes

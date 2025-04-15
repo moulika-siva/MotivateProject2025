@@ -34,22 +34,11 @@ def MCATNav():
     st.sidebar.page_link("pages/23_MCAT.py", label="MCAT Requirements", icon="🩺")
 
 
-<<<<<<< Updated upstream
 ## ------------------------ Examples for Role of decision_maker ------------------------
 def DecisionMakerHomeNav():
     st.sidebar.page_link("pages/00_Dec_Maker_Home.py", label="Decision Maker", icon="🧑‍🏫")
 
 
-=======
-
-
-
-## ------------------------ Examples for Role of decision_maker ------------------------
-def DecisionMakerHomeNav():
-    st.sidebar.page_link("pages/00_Dec_Maker_Home.py", label="Decision Maker", icon="🧑‍🏫")
-
-
->>>>>>> Stashed changes
 def ViewCourseNav():
     st.sidebar.page_link(
         "pages/05_View_Courses.py", label="View Courses", icon="📚"
@@ -70,17 +59,10 @@ def FeedbackNav():
 #### ------------------------ System Admin Role ------------------------
 def AdminPageNav():
     st.sidebar.page_link("pages/20_Admin_Home.py", label="System Admin", icon="🖥️")
-<<<<<<< Updated upstream
     
 def UpdateSystemNav():
     st.sidebar.page_link("pages/21_System_Update.py", label="Add System Update", icon="➕")
 
-=======
-
-def UpdateSystemNav():
-    st.sidebar.page_link("pages/21_System_Update.py", label="Add System Update", icon="➕")
-
->>>>>>> Stashed changes
 def ChangeUserRole():
     st.sidebar.page_link("pages/25_Change_Role.py", label="Change to System Admin", icon="🔄")
 
