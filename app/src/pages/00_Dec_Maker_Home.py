@@ -14,12 +14,17 @@ st.write('')
 st.write('')
 st.write('### What would you like to do today?')
 
-if st.button('View Student Grades', 
+if st.button('View Course List', 
              type='primary',
              use_container_width=True):
-  st.switch_page('pages/05_View_Grades.py')
+  st.switch_page('pages/05_View_Courses.py')
 
-if st.button('Create Lesson Plans', 
+if st.button('Update Lesson Plans', 
              type='primary',
              use_container_width=True):
   st.switch_page('pages/06_Lesson_Plans.py')
+
+if st.button('Update Assignment Feedback', 
+             type='primary',
+             use_container_width=True):
+  st.switch_page('pages/07_Assignment_Feedback.py')
