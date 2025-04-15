@@ -104,7 +104,7 @@ def get_grocery_list_items():
     current_app.logger.info('GET /grocery-lists route')
     cursor = db.get_db().cursor()
     cursor.execute('''
-    SELECT user_id, title, created_at, update_at, list_id
+    SELECT user_id, title, created_at, updated_at, list_id
     FROM grocery_lists
     ORDER BY title ASC
     ''')
