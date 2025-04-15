@@ -11,15 +11,17 @@ SideBarLinks()
 st.markdown("# Parent Task Manager")
 st.write("Select an action below to manage your tasks, sleep logs, and more.")
 
-# buttons on home page
-if st.button("Grocery List"):
-    st.switch_page('02_Grocery_List.py')  
+if st.button('Grocery List', 
+             type='primary',
+             use_container_width=True):
+  st.switch_page('pages/02_Grocery_List.py')
 
-if st.button("Tasks"):
-    st.switch_page('03_Tasks.py')
+if st.button('Tasks', 
+             type='primary', 
+             use_container_width=True):
+  st.switch_page('pages/03_Tasks.py')
 
-# Sleep log section
-st.markdown("## Sleep Logs")
-
-if st.button("Get Sleep Logs"):
-    st.switch_page('04_Sleep_Logs.py')
+if st.button('Sleep Logs', 
+             type='primary', 
+             use_container_width=True):
+  st.switch_page('pages/04_Sleep_Logs.py')
