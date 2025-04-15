@@ -1,69 +1,34 @@
 import streamlit as st
 import pandas as pd
-from datetime import datetime
+import requests
+import os
 
-# Simulated sleep log data to reflect database schema
-sleep_logs_data = [
-    {
-        "sleep_id": 1,
-        "user_id": 101,
-        "baby_name": "Aiden Smith",
-        "start_time": "2024-04-01 21:00",
-        "end_time": "2024-04-02 06:00"
-    },
-    {
-        "sleep_id": 2,
-        "user_id": 102,
-        "baby_name": "Lily Johnson",
-        "start_time": "2024-04-01 22:00",
-        "end_time": "2024-04-02 05:30"
-    },
-    {
-        "sleep_id": 3,
-        "user_id": 103,
-        "baby_name": "Ethan Lee",
-        "start_time": "2024-04-01 20:45",
-        "end_time": "2024-04-02 05:00"
-    },
-    {
-        "sleep_id": 4,
-        "user_id": 101,
-        "baby_name": "Aiden Smith",
-        "start_time": "2024-04-02 21:15",
-        "end_time": "2024-04-03 06:30"
-    },
-    {
-        "sleep_id": 5,
-        "user_id": 102,
-        "baby_name": "Lily Johnson",
-        "start_time": "2024-04-02 21:45",
-        "end_time": "2024-04-03 05:45"
-    },
-    {
-        "sleep_id": 6,
-        "user_id": 103,
-        "baby_name": "Ethan Lee",
-        "start_time": "2024-04-02 21:00",
-        "end_time": "2024-04-03 06:00"
-    }
-]
-
-# Convert to DataFrame
-sleep_df = pd.DataFrame(sleep_logs_data)
-
-# Convert to datetime
-sleep_df["start_time"] = pd.to_datetime(sleep_df["start_time"])
-sleep_df["end_time"] = pd.to_datetime(sleep_df["end_time"])
-
-# Calculate sleep length
-sleep_df["sleep_length"] = (sleep_df["end_time"] - sleep_df["start_time"]).dt.total_seconds() / 3600
-
-# Streamlit layout
 st.title("Sleep Log Viewer")
 
-# Sidebar filter
+# Define Flask backend URL directly (change host if needed)
+FLASK_BACKEND_URL = "http://web-api:4000/p/sleep_logs"
+
+
+# Attempt to fetch sleep log data from Flask API
+try:
+    response = requests.get(f"{FLASK_BACKEND_URL}")
+    response.raise_for_status()
+    sleep_logs_data = response.json()
+except requests.exceptions.RequestException as e:
+    st.error(f"Failed to fetch sleep log data: {e}")
+    st.stop()
+
+# Convert response to DataFrame
+sleep_df = pd.DataFrame(sleep_logs_data)
+
+# Convert datetime fields
+sleep_df["start_time"] = pd.to_datetime(sleep_df["start_time"])
+sleep_df["end_time"] = pd.to_datetime(sleep_df["end_time"])
+sleep_df["sleep_length"] = (sleep_df["end_time"] - sleep_df["start_time"]).dt.total_seconds() / 3600
+
+# Sidebar filter by baby name
 st.sidebar.header("Filter by Baby")
-baby_options = ["All Babies"] + sorted(sleep_df["baby_name"].unique().tolist())
+baby_options = ["All Babies"] + sorted(sleep_df["baby_name"].dropna().unique().tolist())
 selected_baby = st.sidebar.selectbox("Select a baby:", baby_options)
 
 # Filter data
@@ -72,7 +37,7 @@ if selected_baby != "All Babies":
 else:
     filtered_df = sleep_df
 
-# Display
+# Display sleep log table
 st.header(f"Sleep Logs{' for ' + selected_baby if selected_baby != 'All Babies' else ''}")
 st.dataframe(filtered_df[["baby_name", "start_time", "end_time", "sleep_length"]].rename(columns={
     "baby_name": "Baby Name",
