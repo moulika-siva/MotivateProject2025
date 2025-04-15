@@ -25,6 +25,15 @@ with st.form("Add a System Update"):
         data['update_id'] = update_id
         data['update_type'] = update_type
         data['update_release_date'] = update_date
-        st.write(data)
+        st.write("Sending data...")
+        try:
+            response = requests.post('http://api:4000/a/system_updates', json=data)
 
-        requests.post('http://api:4000/a/system_updates', json=data)
+            if response.status_code == 201:
+                st.success("System update added successfully.")
+            else:
+                st.error(f"Failed to add update. Status code: {response.status_code}")
+                st.error(response.json().get('error', 'No additional error message provided.'))
+
+        except requests.exceptions.RequestException as e:
+            st.error(f"Request failed: {e}")

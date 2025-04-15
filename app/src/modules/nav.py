@@ -59,7 +59,7 @@ def ChangeUserRole():
     st.sidebar.page_link("pages/25_Change_Role.py", label="Change to System Admin", icon="🔄")
 
 def DeleteCacheData():
-    st.sidebar.page_link("pages/26_Delete_Cache_Data.py", label="Delete Cache Data", icon="␡")
+    st.sidebar.page_link("pages/26_Delete_Cache_Data.py", label="Delete Cache Data", icon="🗑️")
 
 
 # --------------------------------Links Function -----------------------------------------------

@@ -21,3 +21,10 @@ with st.form("Promote User Form"):
     if submitted:
         url = f'http://api:4000/a/make_admin/{user_id}'
         response = requests.put(url)
+
+        if response.status_code == 200:
+            st.success("User successfully promoted to SystemAdmin!")
+        elif response.status_code == 404:
+            st.error("User not found.")
+        else:
+            st.error("Something went wrong.")
