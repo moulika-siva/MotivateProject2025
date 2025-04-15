@@ -109,8 +109,8 @@ def get_grocery_list_items():
 
 #------------------------------------------------------------
 # creates a to do list for the parent
-@parents.route('/todo-lists', methods=['POST'])
-def create_todo_list():
+@parents.route('/parent-todo-lists', methods=['POST'])
+def create_parent_todo_list():
     todo_info = request.json
     user_id = todo_info['user_id']
     title = todo_info['title']
