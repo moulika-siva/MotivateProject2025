@@ -42,7 +42,7 @@ with st.form("add_task_form"):
                 "task_id": task_id,
                 "description": description,
                 "duedate": duedate.isoformat(),
-                'frequency": frequency,
+                "frequency": frequency,
                 "completionstatus": completionstatus
             }
         )
