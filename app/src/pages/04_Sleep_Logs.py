@@ -4,6 +4,7 @@ logger = logging.getLogger(__name__)
 import streamlit as st
 from modules.nav import SideBarLinks
 
+
 from PIL import Image
 
 def add_logo(logo_path, height=100):

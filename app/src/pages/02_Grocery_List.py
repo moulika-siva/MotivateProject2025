@@ -2,10 +2,15 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
+from PIL import Image
 
+def add_logo(logo_path, height=100):
+    logo = Image.open(logo_path)
+    st.image(logo, height=height)
 
 # set the header of the page
 st.header('GROCERY LIST')
+
 
 # adding bob's profile picture
 add_logo('assets/bob.png', height=100)
