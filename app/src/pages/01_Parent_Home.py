@@ -8,9 +8,7 @@ import pydeck as pdk
 from urllib.error import URLError
 from modules.nav import SideBarLinks
 
-# Sidebar and logo
-SideBarLinks()
-add_logo("motivate-logo.png", height=120)
+
 
 # Page Title
 st.markdown("# Parent Task Manager")
