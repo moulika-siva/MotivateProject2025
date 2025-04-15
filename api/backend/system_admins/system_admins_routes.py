@@ -25,23 +25,31 @@ def add_new_system_update():
         the_data = request.json
         current_app.logger.info(the_data)
 
-        # Extract relevant fields
+        # Extract fields
+        update_id = the_data['update_id']
         update_type = the_data['update_type']
         release_date = the_data['update_release_date']
 
-        # Use a parameterized INSERT query (auto-incrementing update_id)
-        query = '''
-            INSERT INTO system_update (type, release_date)
-            VALUES (%s, %s)
-        '''
-
-        # Execute the query safely
+        # Get a database cursor
         cursor = db.get_db().cursor()
-        cursor.execute(query, (update_type, release_date))
+
+        # Step 1: Insert into system_commands if not already exists
+        insert_cmd = '''
+            INSERT IGNORE INTO system_commands (system_id)
+            VALUES (%s)
+        '''
+        cursor.execute(insert_cmd, (update_id,))
+
+        # Step 2: Insert into system_update
+        insert_update = '''
+            INSERT INTO system_update (update_id, type, release_date)
+            VALUES (%s, %s, %s)
+        '''
+        cursor.execute(insert_update, (update_id, update_type, release_date))
         db.get_db().commit()
 
         response = make_response(jsonify({'message': 'Successfully added system update'}))
-        response.status_code = 201  # Created
+        response.status_code = 201
         return response
 
     except Exception as e:

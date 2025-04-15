@@ -178,7 +178,7 @@ CREATE TABLE IF NOT EXISTS `exams` (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `system_commands` (
   `system_id` INT NOT NULL AUTO_INCREMENT,
-  `version` VARCHAR(20) NOT NULL,
+  `version` VARCHAR(20) DEFAULT NULL,
   `status` ENUM('Active', 'Maintenance') DEFAULT 'Active',
   `last_updated` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`system_id`)
