@@ -9,7 +9,7 @@ from flask import make_response
 from flask import current_app
 from backend.db_connection import db
 from backend.ml_models.model01 import predict
-
+flask run --port 4000
 #------------------------------------------------------------
 # Create a new Blueprint object, which is a collection of 
 # routes.
