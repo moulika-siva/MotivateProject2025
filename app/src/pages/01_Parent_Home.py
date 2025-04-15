@@ -20,7 +20,7 @@ if st.button("Grocery List"):
     st.switch_page("02_Grocery_List.py")  
 
 if st.button("Tasks"):
-    st.switch_page("03_Task.py")
+    st.switch_page("03_Tasks.py")
 
 # Sleep log section
 st.markdown("## Sleep Logs")
