@@ -20,6 +20,12 @@ if st.button('GRADES',
   st.switch_page('pages/05_View_Grades.py')
 
 if st.button('TASKS', 
-             type='primary',
+             type='primary', 
              use_container_width=True):
   st.switch_page('pages/22_Student_Tasks.py')
+
+if st.button('MCAT', 
+             type='primary', 
+             use_container_width=True):
+  st.switch_page('pages/23_MCAT.py')
+
