@@ -54,6 +54,7 @@ def get_one_parent(userID):
 
 #------------------------------------------------------------
 # Adds a new task for the parent
+
 @parents.route('/tasks', methods=['POST'])
 def add_task():
     current_app.logger.info('POST /tasks route')
@@ -125,3 +126,46 @@ def create_todo_list():
     db.get_db().commit()
     return 'To-do list created!', 201
 
+
+#------------------------------------------------------------
+# Update task frequency
+
+@parents.route('/tasks',methods=['PUT'])
+def update_task_frequency():
+    current_app.logger.info('PUT /tasks route')
+    task_info = request.json
+    task_id = task_info['id']
+    new_frequency = task_info['frequency']
+
+    if new_frequency not in ['Pending', 'Completed']:
+        return 'Invalid frequency value'
+    
+    query = 'UPDATE asks SET frequency = %s WHERE task_id = %s'
+    data = (new_frequency, task_id)
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query, data)
+    db.get_db().commit()
+
+    return 'task frequency updated'
+
+#------------------------------------------------------------
+# Delete completed tasks
+@parents.route('/tasks/completed',methods=['DELETE'])
+def delete_completed_tasks():
+    current_app.logger.info('DELETE /students/tasks route')
+    student_id = request.args.get('student_id')
+
+    cursor = db.get_db().cursor()
+    cursor.execute('''
+        DELETE FROM tasks
+        WHERE list_id IN (
+            SELECT list_id FROM todo_list
+            WHERE user_id = %s
+        ) AND frequency = 'Completed'
+    ''', (student_id,))
+    db.get_db().commit
+
+    the_response = make_response(jsonify({'message': 'Completed tasks deleted'}))
+    the_response.status_code = 200
+    return the_response
