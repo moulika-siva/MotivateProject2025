@@ -24,8 +24,18 @@ API_BASE_URL = "http://localhost:4000"
 
 
 # Make the GET request to fetch logs
+user_id = st.session_state.get("user_id")
+
+if not user_id:
+    st.warning("No user ID found in session.")
+else:
+    try:
+        response = requests.get(f"{API_BASE_URL}/sleep_logs", params={"user_id": user_id})
+        # ... rest of your code ...
+    except Exception as e:
+        st.error(f"Error connecting to API: {str(e)}")
 try:
-    response = requests.get(f"{API_BASE_URL}/sleep_logs", params={"Bob": user_id})
+    response = requests.get(f"{API_BASE_URL}/sleep_logs", params={"user_id": user_id})
 
     if response.status_code == 200:
         sleep_data = response.json()
