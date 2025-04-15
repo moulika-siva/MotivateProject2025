@@ -4,9 +4,7 @@ logger = logging.getLogger(__name__)
 import streamlit as st
 from modules.nav import SideBarLinks
 
-# Sidebar and logo
-SideBarLinks()
-add_logo("motivate-logo.png", height=120)
+
 
 # Page Title
 st.title("Sleep Logs")

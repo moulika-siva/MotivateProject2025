@@ -2,8 +2,7 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# Call the SideBarLinks from the nav module in the modules directory
-SideBarLinks()
+
 
 # set the header of the page
 st.header('GROCERY LIST')
