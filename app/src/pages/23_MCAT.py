@@ -3,7 +3,8 @@ import streamlit as st
 #Title and layout
 st.set_page_config(page_title="MCAT Study Progress", layout="wide")
 st.title("MCAT Progress Tracker")
-st.write("As a pre-med student, track your chapter completion and visualize your progress!")
+st.write("Track your MCAT studying with our handy checklist and progress bar.")
+st.write("Way to go future doctor!!")
 
 #Chapters
 chapters = [
@@ -33,11 +34,14 @@ for chapter in chapters:
         if checked:
             st.session_state.completed_chapters.remove(chapter)
 
+# Accounts for the following user story: "As a pre-med student, I need to be able 
+# to track and update what chapters I have done in my MCAT studying so I know what to cover next."
+
 #Calculate progress
 completed = len(st.session_state.completed_chapters)
 total = len(chapters)
 progress = completed / total
 
 st.write("")
-st.write("Progress Timeline")
+st.header("Progress Timeline")
 st.progress(progress)
