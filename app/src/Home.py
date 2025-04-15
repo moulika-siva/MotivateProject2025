@@ -72,5 +72,5 @@ if st.button('Act as Bob, a Parent',
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'parent'
     st.session_state['first_name'] = 'Bob'
-    st.switch_page('pages/20_Admin_Home.py')
+    st.switch_page('pages/01_Parent_Home.py')
 
