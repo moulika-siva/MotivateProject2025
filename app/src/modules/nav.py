@@ -53,7 +53,10 @@ def AdminPageNav():
     st.sidebar.page_link("pages/20_Admin_Home.py", label="System Admin", icon="🖥️")
     
 def UpdateSystemNav():
-    st.sidebar.page_link("pages/21_System_Update.py", label="Update System", icon="🔄")
+    st.sidebar.page_link("pages/21_System_Update.py", label="Add System Update", icon="➕")
+
+def ChangeUserRole():
+    st.sidebar.page_link("pages/25_Change_Role.py", label="Change to System Admin", icon="🔄")
 
 
 # --------------------------------Links Function -----------------------------------------------
@@ -93,6 +96,7 @@ def SideBarLinks(show_home=False):
         if st.session_state["role"] == "administrator":
             AdminPageNav()
             UpdateSystemNav()
+            ChangeUserRole()
 
     # Always show the About page at the bottom of the list of links
     AboutPageNav()

@@ -11,7 +11,12 @@ SideBarLinks()
 
 st.title('System Admin Home Page')
 
-if st.button('Update Any System Updates', 
+if st.button('Add Any System Updates', 
              type='primary',
              use_container_width=True):
   st.switch_page('pages/21_System_Update.py')
+
+if st.button('Update User to System Admin', 
+             type='primary',
+             use_container_width=True):
+  st.switch_page('pages/25_Change_Role.py')
