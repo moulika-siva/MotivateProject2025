@@ -34,9 +34,6 @@ def MCATNav():
     st.sidebar.page_link("pages/23_MCAT.py", label="MCAT Requirements", icon="🩺")
 
 
-
-
-
 ## ------------------------ Examples for Role of decision_maker ------------------------
 def DecisionMakerHomeNav():
     st.sidebar.page_link("pages/00_Dec_Maker_Home.py", label="Decision Maker", icon="🧑‍🏫")
@@ -62,7 +59,7 @@ def FeedbackNav():
 #### ------------------------ System Admin Role ------------------------
 def AdminPageNav():
     st.sidebar.page_link("pages/20_Admin_Home.py", label="System Admin", icon="🖥️")
-
+    
 def UpdateSystemNav():
     st.sidebar.page_link("pages/21_System_Update.py", label="Add System Update", icon="➕")
 
