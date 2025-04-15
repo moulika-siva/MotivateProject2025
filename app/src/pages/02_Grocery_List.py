@@ -21,7 +21,6 @@ add_logo('assets/bob.png', width=100)
 st.write(f"### Hi, {st.session_state['first_name']}.")
 
 # display section for bob's grocery lists of the week
-with st.echo(code_location='above'):
     grocery_list = pd.DataFrame({
         'Item': ['Milk', 'Bread', 'Eggs', 'Flour', 'Yogurt'],
         'Quantity': [2 ,4 ,5 ,1 ,3],
@@ -30,7 +29,6 @@ with st.echo(code_location='above'):
     st.dataframe(grocery_list)
 
 # visualizing purchased vs nonpurchased items
-with st.echo(code_location='above'):
    status_counts = grocery_list['PurchaseStatus'].value_counts() 
    fig = px.pie(values=status_counts.values,
    names=status_counts.index,
@@ -38,7 +36,7 @@ with st.echo(code_location='above'):
    st.plotly_chart(fig)
 
 
-with st.echo(code_location='above'):
+
     purchasestatus_summary=pd.DataFrame({
         'Purchased': status_counts.index,
         'Count': status_counts.values
