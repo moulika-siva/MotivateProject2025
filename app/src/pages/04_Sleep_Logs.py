@@ -2,37 +2,38 @@ import logging
 logger = logging.getLogger(__name__)
 
 import streamlit as st
-from modules.nav import SideBarLinks
+import pandas as pd
 import requests
+from streamlit_extras.app_logo import add_logo
+from modules.nav import SideBarLinks
 
-st.set_page_config(layout = 'wide')
-
-# Display the appropriate sidebar links for the role of the logged in user
+# Sidebar and logo
 SideBarLinks()
+add_logo("motivate-logo.png", height=120)
 
-st.title('Prediction with Regression')
+# Page Title
+st.title("Sleep Logs")
+st.write("This page shows your baby's sleep log history.")
 
-# create a 2 column layout
-col1, col2 = st.columns(2)
+API_BASE_URL = "http://localhost:4000"
 
-# add one number input for variable 1 into column 1
-with col1:
-  var_01 = st.number_input('Variable 01:',
-                           step=1)
 
-# add another number input for variable 2 into column 2
-with col2:
-  var_02 = st.number_input('Variable 02:',
-                           step=1)
+# Make the GET request to fetch logs
+try:
+    response = requests.get(f"{API_BASE_URL}/sleep_logs", params={"user_id": user_id})
 
-logger.info(f'var_01 = {var_01}')
-logger.info(f'var_02 = {var_02}')
+    if response.status_code == 200:
+        sleep_data = response.json()
 
-# add a button to use the values entered into the number field to send to the 
-# prediction function via the REST API
-if st.button('Calculate Prediction',
-             type='primary',
-             use_container_width=True):
-  results = requests.get(f'http://api:4000/c/prediction/{var_01}/{var_02}').json()
-  st.dataframe(results)
+        if sleep_data:
+            sleep_df = pd.DataFrame(sleep_data)
+            sleep_df.columns = ["User ID", "Start Time", "End Time", "Baby Name", "Sleep ID"]
+            st.dataframe(sleep_df)
+        else:
+            st.info("No sleep logs found for this user.")
+    else:
+        st.error(f"Failed to fetch sleep logs: {response.status_code}")
+except Exception as e:
+    st.error(f"Error connecting to API: {str(e)}")
+
   

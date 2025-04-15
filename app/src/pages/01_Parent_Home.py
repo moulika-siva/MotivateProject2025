@@ -21,10 +21,10 @@ if st.button("Grocery List"):
     st.switch_page("pages/02_Grocery_list.py")  # Replace with your actual file
 
 if st.button("Tasks"):
-    st.switch_page("pages/04_Task.py")
+    st.switch_page("pages/03_Task.py")
 
 # Sleep log section
 st.markdown("## Sleep Logs")
 
 if st.button("Get Sleep Logs"):
-    st.switch_page("pages/05_sleep_logs.py")
+    st.switch_page("pages/04_Sleep_Logs.py")
