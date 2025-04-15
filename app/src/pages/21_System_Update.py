@@ -20,11 +20,20 @@ with st.form("Add a System Update"):
 
     submitted = st.form_submit_button("Submit")
 
+<<<<<<< Updated upstream
+=======
+
+
+>>>>>>> Stashed changes
     if submitted:
         data = {}
         data['update_id'] = update_id
         data['update_type'] = update_type
         data['update_release_date'] = update_date
+<<<<<<< Updated upstream
+=======
+        
+>>>>>>> Stashed changes
         st.write("Sending data...")
         try:
             response = requests.post('http://api:4000/a/system_updates', json=data)
@@ -36,4 +45,8 @@ with st.form("Add a System Update"):
                 st.error(response.json().get('error', 'No additional error message provided.'))
 
         except requests.exceptions.RequestException as e:
+<<<<<<< Updated upstream
             st.error(f"Request failed: {e}")
+=======
+            st.error(f"Request failed: {e}")
+>>>>>>> Stashed changes

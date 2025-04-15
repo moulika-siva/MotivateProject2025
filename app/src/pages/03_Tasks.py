@@ -5,7 +5,11 @@ import streamlit as st
 from modules.nav import SideBarLinks
 from PIL import Image
 
+<<<<<<< Updated upstream
 def add_logo(logo_path, width=100):  # default width if needed
+=======
+def add_logo(logo_path, width=100): # default width if needed
+>>>>>>> Stashed changes
     logo = Image.open(logo_path)
     st.image(logo, width=width)
 
@@ -20,7 +24,11 @@ st.write("Use the sections below to manage tasks:")
 API_BASE_URL = "http://localhost:4000"
 
 # -----------------------------
+<<<<<<< Updated upstream
 #  Add a Task 
+=======
+#  Add a Task 
+>>>>>>> Stashed changes
 # -----------------------------
 st.markdown("## Add a Task")
 
@@ -31,9 +39,15 @@ with st.form("add_task_form"):
     duedate = st.date_input("Due Date")
     frequency = st.selectbox("Frequency", ["One-time", "Daily", "Weekly"])
     completionstatus = st.selectbox("Completion Status", ["No", "Yes"])
+<<<<<<< Updated upstream
     
     submit_add = st.form_submit_button("Add Task")
     
+=======
+
+    submit_add = st.form_submit_button("Add Task")
+
+>>>>>>> Stashed changes
     if submit_add:
         response = requests.post(
             f"{API_BASE_URL}/tasks",
@@ -61,7 +75,11 @@ with st.form("update_task_form"):
     new_frequency = st.selectbox("New Frequency", ["One-time", "Daily", "Weekly"])
 
     submit_update = st.form_submit_button("Update Frequency")
+<<<<<<< Updated upstream
     
+=======
+
+>>>>>>> Stashed changes
     if submit_update:
         response = requests.put(
             f"{API_BASE_URL}/tasks/{task_id_update}",

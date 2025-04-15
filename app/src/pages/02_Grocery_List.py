@@ -4,7 +4,11 @@ import matplotlib.pyplot as plt
 import plotly.express as px
 from PIL import Image
 
+<<<<<<< Updated upstream
 def add_logo(logo_path, width=100):  # default width if needed
+=======
+def add_logo(logo_path, width=100):  # default width
+>>>>>>> Stashed changes
     logo = Image.open(logo_path)
     st.image(logo, width=width)
 
@@ -43,3 +47,7 @@ purchasestatus_summary=pd.DataFrame({
     })
 
 st.table(purchasestatus_summary)
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes

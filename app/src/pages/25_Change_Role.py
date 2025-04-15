@@ -27,4 +27,8 @@ with st.form("Promote User Form"):
         elif response.status_code == 404:
             st.error("User not found.")
         else:
+<<<<<<< Updated upstream
             st.error("Something went wrong.")
+=======
+            st.error("Something went wrong.")
+>>>>>>> Stashed changes
