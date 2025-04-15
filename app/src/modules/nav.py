@@ -51,9 +51,9 @@ def ClassificationNav():
 #### ------------------------ System Admin Role ------------------------
 def AdminPageNav():
     st.sidebar.page_link("pages/20_Admin_Home.py", label="System Admin", icon="🖥️")
-    st.sidebar.page_link(
-        "pages/21_ML_Model_Mgmt.py", label="ML Model Management", icon="🏢"
-    )
+    
+def UpdateSystemNav():
+    st.sidebar.page_link("pages/21_System_Update.py", label="Update System", icon="🔄")
 
 
 # --------------------------------Links Function -----------------------------------------------
@@ -92,6 +92,7 @@ def SideBarLinks(show_home=False):
         # If the user is an administrator, give them access to the administrator pages
         if st.session_state["role"] == "administrator":
             AdminPageNav()
+            UpdateSystemNav()
 
     # Always show the About page at the bottom of the list of links
     AboutPageNav()
