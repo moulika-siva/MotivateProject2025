@@ -14,10 +14,10 @@ st.write('')
 st.write('')
 st.write('### Organize your personal/academic life!')
 
-if st.button('GRADES', 
+if st.button('CALENDAR', 
              type='primary',
              use_container_width=True):
-  st.switch_page('pages/05_View_Grades.py')
+  st.switch_page('pages/24_Student_Cal.py')
 
 if st.button('TASKS', 
              type='primary', 

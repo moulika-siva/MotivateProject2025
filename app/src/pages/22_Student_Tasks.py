@@ -5,14 +5,16 @@ import pandas as pd
 st.title("Student Tasks")
 
 #Hardcoded task data
-tasks_data = [
-    {"student_id": 1, "first_name": "Lana", "last_name": "Martin", "course": "GenChem", "task": "Lab Report 1", "status": "Incomplete"},
-    {"student_id": 1, "first_name": "Lana", "last_name": "Martin", "course": "Bio", "task": "Animals HW", "status": "Complete"},
-    {"student_id": 1, "first_name": "Lana", "last_name": "Martin", "course": "Chem", "task": "Chapter 3 Notes", "status": "Incomplete"},
-    {"student_id": 1, "first_name": "Lana", "last_name": "Martin", "course": "Orgo", "task": "Molecules Quiz", "status": "Incomplete"},
-]
+if "tasks_data" not in st.session_state:
+    st.session_state.tasks_data = [
+        {"student_id": 1, "first_name": "Lana", "last_name": "Martin", "course": "GenChem", "task": "Lab Report 1", "status": "Incomplete"},
+        {"student_id": 1, "first_name": "Lana", "last_name": "Martin", "course": "Bio", "task": "Animals HW", "status": "Complete"},
+        {"student_id": 1, "first_name": "Lana", "last_name": "Martin", "course": "Chem", "task": "Chapter 3 Notes", "status": "Incomplete"},
+        {"student_id": 1, "first_name": "Lana", "last_name": "Martin", "course": "Orgo", "task": "Molecules Quiz", "status": "Incomplete"},
+    ]
 
-df = pd.DataFrame(tasks_data)
+
+df = pd.DataFrame(st.session_state.tasks_data)
 
 #Incomplete task filtr
 incomplete_tasks = df[df["status"] == "Incomplete"]
@@ -29,7 +31,21 @@ else:
 
 #The remaining tasks
 st.header("Remaining Tasks for the Semester")
-st.dataframe(filtered_df[["course", "task"]])
+for idx, row in filtered_df.iterrows():
+    column1, column2, column3 = st.columns([3, 5, 2])
+    with column1:
+        st.write(f"**{row['course']}**")
+    with column2:
+        st.write(row["task"])
+    with column3:
+        if st.button("☐", key=f"complete_{idx}"):
+            st.session_state.tasks_data[idx]["status"] = "Complete"
+            st.rerun()
 
 #Summary
 st.write(f"Total Remaining Tasks: {len(filtered_df)}")
+
+# Accounts for the following user story:
+# "As a biology student, I need to be able to keep a list of assignments for my major classes 
+# with completed tasks removed so that I can clearly see the remaining work for the semester."
+
