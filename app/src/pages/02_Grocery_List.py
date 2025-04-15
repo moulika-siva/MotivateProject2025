@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import plotly.express as px
 from PIL import Image
 
-def add_logo(logo_path, width=100):  # default width if needed
+def add_logo(logo_path, width=100):  # default width
     logo = Image.open(logo_path)
     st.image(logo, width=width)
 
