@@ -5,12 +5,12 @@ import streamlit as st
 from modules.nav import SideBarLinks
 from PIL import Image
 
-def add_logo(logo_path, height=100):
+def add_logo(logo_path):
     logo = Image.open(logo_path)
-    st.image(logo, height=height)
-    
+    st.image(logo, use_column_width=True)
+
 # adding bob's profile picture
-add_logo('assets/bob.png', height=100)
+add_logo('assets/bob.png')
 
 
 # Page Title
