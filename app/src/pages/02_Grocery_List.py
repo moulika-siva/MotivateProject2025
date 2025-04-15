@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 st.header('GROCERY LIST')
 
 # adding bob's profile picture
-add_logo('assets/bob_profile.png', height=100)
+add_logo('assets/bob.png', height=100)
 
 # welcome message personalized for bob
 st.write(f"### Hi, {st.session_state['first_name']}.")

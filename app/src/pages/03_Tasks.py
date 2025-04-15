@@ -4,6 +4,8 @@ logger = logging.getLogger(__name__)
 import streamlit as st
 from modules.nav import SideBarLinks
 
+# adding bob's profile picture
+add_logo('assets/bob.png', height=100)
 
 
 # Page Title
