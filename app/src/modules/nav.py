@@ -78,7 +78,7 @@ def GroceryNav():
     st.sidebar.page_link("pages/02_Grocery_List.py", label="Grocery Lists", icon="📋")
 
 def TasksNav():
-    st.sidebar.page_link("pages/03_Tasks.py", label="Add a Task", icon="➕")
+    st.sidebar.page_link("pages/22_Student_Tasks.py", label="Add a Task", icon="➕")
 
 def SleepLogsNav():
     st.sidebar.page_link("pages/04_Sleep_Logs.py", label="View Sleep Logs", icon="💤")
