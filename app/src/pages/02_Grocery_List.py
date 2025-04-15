@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-
+import plotly.express as px
 from PIL import Image
 
 def add_logo(logo_path, width=100):  # default width if needed
