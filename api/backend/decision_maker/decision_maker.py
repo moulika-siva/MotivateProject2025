@@ -17,7 +17,7 @@ decision_maker = Blueprint('decision_maker', __name__)
 
 
 #------------------------------------------------------------
-# Get the courses 
+# Get the courselists
 @decision_maker.route('/decision_maker/courselist', methods=['GET'])
 def get_grades():
     cursor = db.get_db().cursor()
@@ -94,7 +94,7 @@ def delete_exams(exam_id):
 
 #------------------------------------------------------------
 # Update assignment description and feedback
-@decision_maker.route('/decision_maker/assignments/<int:assign_id>', methods=['PUT'])
+@decision_maker.route('/decision_maker/assignments/', methods=['PUT'])
 def update_assignment_description():
     current_app.logger.info('PUT /decision_maker/assignments route')
     
@@ -105,27 +105,16 @@ def update_assignment_description():
     feedback = assignment_data.get('feedback')
     
     # Update the assignment in the database
-    cursor = db.get_db().cursor()
     query = 'UPDATE assignments SET description = %s, feedback = %s WHERE assign_id = %s'
     data = (description, feedback, assign_id)
+    cursor = db.get_db().cursor()
     
     cursor.execute(query, data)
-    rows_affected = cursor.rowcount
     db.get_db().commit()
-    
-    if rows_affected > 0:
-        return jsonify({
-            'message': 'Assignment updated successfully',
-            'assign_id': assign_id
-        }), 200
-    else:
-        return jsonify({
-            'message': 'Assignment not found',
-            'assign_id': assign_id
-        }), 404
-
+    return 'assignments updated!'
+  
 #------------------------------------------------------------
-# Get student's information by course 
+# Get student's information by course for communication
 @decision_maker.route('/decision_maker/students-info/<int:course_id>', methods=['GET'])
 def get_student_info(course_id):
     current_app.logger.info(f'GET /decision_maker/students-info/{course_id} route')
