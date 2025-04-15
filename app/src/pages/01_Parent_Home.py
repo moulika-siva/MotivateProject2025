@@ -10,29 +10,21 @@ from modules.nav import SideBarLinks
 
 # Sidebar and logo
 SideBarLinks()
-add_logo("assets/logo.png", height=120)
+add_logo("motivate-logo.png", height=120)
 
 # Page Title
 st.markdown("# Parent Task Manager")
 st.write("Select an action below to manage your tasks, sleep logs, and more.")
 
-# Task management section
-st.markdown("## Task Actions")
+# buttons on home page
+if st.button("Grocery List"):
+    st.switch_page("pages/02_Grocery_list.py")  # Replace with your actual file
 
-if st.button("Create To-Do List"):
-    st.switch_page("pages/create_todo.py")  # Replace with your actual file
-
-if st.button("Add a Task"):
-    st.switch_page("pages/add_task.py")
-
-if st.button("Update Task Frequency"):
-    st.switch_page("pages/update_task_frequency.py")
-
-if st.button("Delete Completed Tasks"):
-    st.switch_page("pages/delete_completed_tasks.py")
+if st.button("Tasks"):
+    st.switch_page("pages/04_Task.py")
 
 # Sleep log section
 st.markdown("## Sleep Logs")
 
 if st.button("Get Sleep Logs"):
-    st.switch_page("pages/view_sleep_logs.py")
+    st.switch_page("pages/05_sleep_logs.py")
