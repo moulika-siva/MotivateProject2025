@@ -57,19 +57,27 @@ def get_one_parent(userID):
 def add_task():
     current_app.logger.info('POST /tasks route')
     task_info = request.json
+
     list_id = task_info['list_id']
     description = task_info['description']
-    duedate = task_info['duedate']
+    due_date = task_info['duedate']  # match DB column name
     frequency = task_info['frequency']
-    completionstatus = task_info['completionstatus']
-    task_id = task_info['task_id'] 
-    
-    query = 'INSERT INTO tasks (list_id, description, duedate, frequency, completionstatus, task_id) VALUES (%s, %s, %s, %s, %s, %s)'
-    data = (list_id, description, duedate, frequency, completionstatus, task_id)
-    cursor = db.get_db().cursor()
-    cursor.execute(query, data)
-    db.get_db().commit()
-    return 'new task added!', 201
+    task_id = task_info['task_id']
+
+    try:
+        query = '''
+            INSERT INTO tasks (list_id, description, due_date, frequency, task_id)
+            VALUES (%s, %s, %s, %s, %s)
+        '''
+        data = (list_id, description, due_date, frequency, task_id)
+        cursor = db.get_db().cursor()
+        cursor.execute(query, data)
+        db.get_db().commit()
+        return jsonify({"message": "new task added!"}), 201
+    except Exception as e:
+        current_app.logger.error(f"Error inserting task: {e}")
+        return jsonify({"error": str(e)}), 500
+
 
 #------------------------------------------------------------
 # Gets the sleep logs 
