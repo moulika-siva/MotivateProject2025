@@ -26,7 +26,7 @@ grocery_list = pd.DataFrame({
     'Quantity': [2 ,4 ,5 ,1 ,3],
     'PurchaseStatus': ['No', 'Yes', 'No', 'Yes', 'No']
     })
-    st.dataframe(grocery_list)
+st.dataframe(grocery_list)
 
 # visualizing purchased vs nonpurchased items
 status_counts = grocery_list['PurchaseStatus'].value_counts() 
