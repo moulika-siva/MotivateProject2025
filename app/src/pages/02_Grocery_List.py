@@ -4,9 +4,10 @@ import matplotlib.pyplot as plt
 
 from PIL import Image
 
-def add_logo(logo_path):
+def add_logo(logo_path, width=100):  # default width if needed
     logo = Image.open(logo_path)
-    st.image(logo, use_column_width=True)
+    st.image(logo, width=width)
+
 
 
 # set the header of the page
@@ -14,7 +15,7 @@ st.header('GROCERY LIST')
 
 
 # adding bob's profile picture
-add_logo('assets/bob.png')
+add_logo('assets/bob.png', width=100)
 
 # welcome message personalized for bob
 st.write(f"### Hi, {st.session_state['first_name']}.")
