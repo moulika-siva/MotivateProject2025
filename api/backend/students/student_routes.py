@@ -8,6 +8,7 @@ from flask import jsonify
 from flask import make_response
 from flask import current_app
 from backend.db_connection import db
+from backend.ml_models.model01 import predict
 
 #------------------------------------------------------------
 # Create a new Blueprint object, which is a collection of 
@@ -152,16 +153,17 @@ def create_to_do_list():
 # Deletes all completed tasks for student
 @students.route('/students/tasks', methods=['DELETE'])
 def delete_completed_tasks():
-    student_id = request.args.get('student_id')  
-    
+    user_id = request.args.get('user_id')
+
     cursor = db.get_db().cursor()
     cursor.execute('''
-        DELETE FROM tasks
-        WHERE student_id = %s AND frequency = 'completed'
-    ''', (student_id,))
-    db.get_db().commit()
+        DELETE tasks FROM tasks
+        JOIN todo_list ON tasks.list_id = todo_list.list_id
+        WHERE todo_list.user_id = %s AND tasks.frequency = 'Completed'
+    ''', (user_id,))
     
-    the_response = make_response(jsonify())
+    db.get_db().commit()
+
+    the_response = make_response(jsonify({'message': 'Completed tasks deleted'}))
     the_response.status_code = 200
     return the_response
-    
