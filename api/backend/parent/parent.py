@@ -107,9 +107,12 @@ def get_grocery_list_items():
     the_response = make_response(jsonify(theData))
     the_response.status_code = 200
     return the_response
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 <<<<<<< HEAD
 =======
+=======
+>>>>>>> 573a5b8ddd68f05f17afeb840a809bdb993e9e8f
 #------------------------------------------------------------
 # creates a to do list for the parent
 @parents.route('/todo-lists', methods=['POST'])
@@ -128,7 +131,10 @@ def create_todo_list():
     db.get_db().commit()
     return 'To-do list created!', 201
 
+<<<<<<< HEAD
 >>>>>>> Stashed changes
+=======
+>>>>>>> 573a5b8ddd68f05f17afeb840a809bdb993e9e8f
 
 #------------------------------------------------------------
 # Update task frequency
