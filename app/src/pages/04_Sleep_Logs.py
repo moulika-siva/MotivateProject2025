@@ -2,75 +2,81 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 
-# Simulated sleep log data with start and end times
+# Simulated sleep log data to reflect database schema
 sleep_logs_data = [
     {
-        "child_id": 1,
-        "child_name": "Aiden Smith",
-        "start_sleep": "2024-04-01 21:00",
-        "end_sleep": "2024-04-02 06:00"
+        "sleep_id": 1,
+        "user_id": 101,
+        "baby_name": "Aiden Smith",
+        "start_time": "2024-04-01 21:00",
+        "end_time": "2024-04-02 06:00"
     },
     {
-        "child_id": 2,
-        "child_name": "Lily Johnson",
-        "start_sleep": "2024-04-01 22:00",
-        "end_sleep": "2024-04-02 05:30"
+        "sleep_id": 2,
+        "user_id": 102,
+        "baby_name": "Lily Johnson",
+        "start_time": "2024-04-01 22:00",
+        "end_time": "2024-04-02 05:30"
     },
     {
-        "child_id": 3,
-        "child_name": "Ethan Lee",
-        "start_sleep": "2024-04-01 20:45",
-        "end_sleep": "2024-04-02 05:00"
+        "sleep_id": 3,
+        "user_id": 103,
+        "baby_name": "Ethan Lee",
+        "start_time": "2024-04-01 20:45",
+        "end_time": "2024-04-02 05:00"
     },
     {
-        "child_id": 1,
-        "child_name": "Aiden Smith",
-        "start_sleep": "2024-04-02 21:15",
-        "end_sleep": "2024-04-03 06:30"
+        "sleep_id": 4,
+        "user_id": 101,
+        "baby_name": "Aiden Smith",
+        "start_time": "2024-04-02 21:15",
+        "end_time": "2024-04-03 06:30"
     },
     {
-        "child_id": 2,
-        "child_name": "Lily Johnson",
-        "start_sleep": "2024-04-02 21:45",
-        "end_sleep": "2024-04-03 05:45"
+        "sleep_id": 5,
+        "user_id": 102,
+        "baby_name": "Lily Johnson",
+        "start_time": "2024-04-02 21:45",
+        "end_time": "2024-04-03 05:45"
     },
     {
-        "child_id": 3,
-        "child_name": "Ethan Lee",
-        "start_sleep": "2024-04-02 21:00",
-        "end_sleep": "2024-04-03 06:00"
+        "sleep_id": 6,
+        "user_id": 103,
+        "baby_name": "Ethan Lee",
+        "start_time": "2024-04-02 21:00",
+        "end_time": "2024-04-03 06:00"
     }
 ]
 
 # Convert to DataFrame
 sleep_df = pd.DataFrame(sleep_logs_data)
 
-# Convert strings to datetime
-sleep_df["start_sleep"] = pd.to_datetime(sleep_df["start_sleep"])
-sleep_df["end_sleep"] = pd.to_datetime(sleep_df["end_sleep"])
+# Convert to datetime
+sleep_df["start_time"] = pd.to_datetime(sleep_df["start_time"])
+sleep_df["end_time"] = pd.to_datetime(sleep_df["end_time"])
 
-# Calculate sleep length in hours
-sleep_df["sleep_length"] = (sleep_df["end_sleep"] - sleep_df["start_sleep"]).dt.total_seconds() / 3600
+# Calculate sleep length
+sleep_df["sleep_length"] = (sleep_df["end_time"] - sleep_df["start_time"]).dt.total_seconds() / 3600
 
-# App title
+# Streamlit layout
 st.title("Sleep Log Viewer")
 
 # Sidebar filter
-st.sidebar.header("Filter by Child")
-child_options = ["All Children"] + sorted(sleep_df["child_name"].unique().tolist())
-selected_child = st.sidebar.selectbox("Select a child:", child_options)
+st.sidebar.header("Filter by Baby")
+baby_options = ["All Babies"] + sorted(sleep_df["baby_name"].unique().tolist())
+selected_baby = st.sidebar.selectbox("Select a baby:", baby_options)
 
-# Filtered data
-if selected_child != "All Children":
-    filtered_df = sleep_df[sleep_df["child_name"] == selected_child]
+# Filter data
+if selected_baby != "All Babies":
+    filtered_df = sleep_df[sleep_df["baby_name"] == selected_baby]
 else:
     filtered_df = sleep_df
 
-# Display table
-st.header(f"Sleep Logs{' for ' + selected_child if selected_child != 'All Children' else ''}")
-st.dataframe(filtered_df[["child_name", "start_sleep", "end_sleep", "sleep_length"]].rename(columns={
-    "child_name": "Child Name",
-    "start_sleep": "Start Time",
-    "end_sleep": "End Time",
+# Display
+st.header(f"Sleep Logs{' for ' + selected_baby if selected_baby != 'All Babies' else ''}")
+st.dataframe(filtered_df[["baby_name", "start_time", "end_time", "sleep_length"]].rename(columns={
+    "baby_name": "Baby Name",
+    "start_time": "Start Time",
+    "end_time": "End Time",
     "sleep_length": "Sleep Length (hrs)"
 }))
