@@ -2,64 +2,68 @@ import requests
 import streamlit as st
 import pandas as pd
 
-#Set page title
-st.title("Student Tasks")
+# Set page title
+st.title("Student Tasks Management")
 
-#Hardcoded task data
-if "tasks_data" not in st.session_state:
-    st.session_state.tasks_data = [
-        {"user_id": 1, "first_name": "Lana", "last_name": "Martin", "course": "GenChem", "task": "Lab Report 1", "status": "Incomplete"},
-        {"user_id": 1, "first_name": "Lana", "last_name": "Martin", "course": "Bio", "task": "Animals HW", "status": "Complete"},
-        {"user_id": 1, "first_name": "Lana", "last_name": "Martin", "course": "Chem", "task": "Chapter 3 Notes", "status": "Incomplete"},
-        {"user_id": 1, "first_name": "Lana", "last_name": "Martin", "course": "Orgo", "task": "Molecules Quiz", "status": "Incomplete"},
-    ]
+# Backend URLs
+FLASK_BACKEND_URL_ALL_TASKS = "http://web-api:4000/s/students/all-tasks"  # GET all tasks
+FLASK_BACKEND_URL_DELETE_TASKS = "http://web-api:4000/s/students/delete-completed"  # DELETE completed tasks
 
+# Function to fetch all tasks
+def fetch_all_tasks():
+    try:
+        response = requests.get(FLASK_BACKEND_URL_ALL_TASKS)
+        response.raise_for_status()
+        tasks = response.json()
+        
+        # Check if tasks are returned and in the correct format
+        if isinstance(tasks, list):
+            return tasks
+        else:
+            st.warning("No tasks returned or invalid data format.")
+            return []
+    except requests.exceptions.RequestException as e:
+        st.error(f"Failed to fetch tasks: {e}")
+        return []
 
-df = pd.DataFrame(st.session_state.tasks_data)
+# Fetch tasks
+tasks = fetch_all_tasks()
 
-#Incomplete task filtr
-incomplete_tasks = df[df["status"] == "Incomplete"]
+# Check if tasks exist
+if tasks:
+    # Convert tasks into DataFrame for easier manipulation and display
+    df = pd.DataFrame(tasks)
+    
+    # Ensure required columns exist in DataFrame
+    required_columns = ["task_id", "description", "due_date", "frequency", "user_id"]
+    for col in required_columns:
+        if col not in df.columns:
+            df[col] = "Unknown"
+    
+    # Show all tasks
+    st.subheader("All Tasks")
+    st.write(df)
 
-#Course filter
-st.header("Filter by course")
-courses = ["All Courses"] + sorted(incomplete_tasks["course"].unique().tolist())
-selected_course = st.selectbox("Select a course to view tasks:", courses)
+    # Filter for incomplete tasks
+    incomplete_tasks = df[df["frequency"] == "Pending"]
 
-if selected_course != "All Courses":
-    filtered_df = incomplete_tasks[incomplete_tasks["course"] == selected_course]
+    # Show remaining incomplete tasks
+    st.subheader("Remaining Tasks")
+    st.write(incomplete_tasks)
+
+    # Provide option to delete completed tasks
+    st.subheader("🧹 Clean Up - Delete Completed Tasks")
+    user_id_to_delete = st.number_input("Enter User ID to delete completed tasks:", min_value=1)
+    
+    if st.button("Delete Completed Tasks"):
+        if user_id_to_delete:
+            response = requests.delete(FLASK_BACKEND_URL_DELETE_TASKS, params={"user_id": user_id_to_delete})
+
+            if response.status_code == 200:
+                st.success(f"✅ Completed tasks for user {user_id_to_delete} have been deleted.")
+            else:
+                st.error(f"Failed to delete completed tasks for user {user_id_to_delete}.")
+        else:
+            st.error("Please enter a valid User ID.")
 else:
-    filtered_df = incomplete_tasks
-
-#The remaining tasks
-st.header("Remaining Tasks for the Semester")
-for idx, row in filtered_df.iterrows():
-    column1, column2, column3 = st.columns([3, 5, 2])
-    with column1:
-        st.write(f"**{row['course']}**")
-    with column2:
-        st.write(row["task"])
-    with column3:
-        if st.button("☐", key=f"complete_{idx}"):
-            st.session_state.tasks_data[idx]["status"] = "Complete"
-            st.rerun()
-
-#Summary
-st.write(f"Total Remaining Tasks: {len(filtered_df)}")
-
-#Button to delete completed tasks from the backend
-#Functioning DELETE route that deletes task from database
-st.markdown("---")
-st.subheader("🧹 Clean Up")
-if st.button("Delete Completed Tasks from Database"):
-    response = requests.delete("http://web-api:4000/s/students/tasks", params={"user_id": 1})
-    if response.status_code == 200:
-        st.success("✅ Completed tasks deleted from database.")
-    else:
-        st.error(response)
-
-
-
-# Accounts for the following user story:
-# "As a biology student, I need to be able to keep a list of assignments for my major classes 
-# with completed tasks removed so that I can clearly see the remaining work for the semester."
-
+    st.error("No tasks to display.")
