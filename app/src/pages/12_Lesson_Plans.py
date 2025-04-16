@@ -11,40 +11,24 @@ API_URL_GET = f"{BASE_URL}/d/decision_maker/lesson-plans"
 API_URL_POST = f"{BASE_URL}/d/decision_maker/lesson-plans"
 
 # -----------------------------
-# Fetch Existing Lesson Plans
+# Fetch existing lesson plans from API
 # -----------------------------
-try:
-    response = requests.get(API_URL_GET)
-    response.raise_for_status()
-    lesson_plans_data = response.json()
-except requests.exceptions.RequestException as e:
-    st.error(f"❌ Failed to fetch lesson plan data: {e}")
-    st.stop()
+def fetch_lesson_plans():
+    try:
+        response = requests.get(API_URL_GET)
+        response.raise_for_status()
+        return pd.DataFrame(response.json())
+    except requests.exceptions.RequestException as e:
+        st.error(f"❌ Failed to fetch lesson plan data: {e}")
+        return pd.DataFrame()
 
-df = pd.DataFrame(lesson_plans_data)
-df["date"] = pd.to_datetime(df["date"])
-
-# -----------------------------
-# Editable Table
-# -----------------------------
-st.subheader("✏️ Edit Existing Lesson Plans")
-edited_df = st.data_editor(
-    df,
-    num_rows="dynamic",
-    use_container_width=True,
-    hide_index=True,
-    column_config={
-        "plan_id": st.column_config.NumberColumn("Plan ID", disabled=True),
-        "course_id": st.column_config.NumberColumn("Course ID"),
-        "professor_id": st.column_config.NumberColumn("Professor ID"),
-        "date": st.column_config.DateColumn("Date"),
-        "content": st.column_config.TextColumn("Content"),
-    },
-    key="lesson_plans_editor"
-)
+# Initial data fetch
+df = fetch_lesson_plans()
+if not df.empty:
+    df["date"] = pd.to_datetime(df["date"])
 
 # -----------------------------
-# Add a New Plan
+# Add New Lesson Plan
 # -----------------------------
 st.subheader("➕ Add a New Lesson Plan")
 with st.form("add_lesson_plan_form", clear_on_submit=True):
@@ -58,26 +42,53 @@ with st.form("add_lesson_plan_form", clear_on_submit=True):
         if new_content.strip() == "":
             st.warning("Please enter some lesson content.")
         else:
-            new_plan = {
+            new_entry = {
                 "course_id": new_course_id,
                 "professor_id": new_professor_id,
-                "date": str(new_date),
-                "content": new_content
+                "date": str(new_date),  # Ensure proper format
+                "content": new_content,
             }
+
             try:
-                post_resp = requests.post(API_URL_POST, json=new_plan)
+                post_resp = requests.post(API_URL_POST, json=new_entry)
                 post_resp.raise_for_status()
-                st.success("✅ New lesson plan added!")
-                st.rerun()
+                st.success("✅ Lesson plan added!")
+
+                # Refresh lesson plan list after POST
+                df = fetch_lesson_plans()
+                df["date"] = pd.to_datetime(df["date"])
+
             except requests.exceptions.RequestException as e:
                 st.error(f"❌ Failed to add lesson plan: {e}")
 
 # -----------------------------
-# Display All Lesson Plans
+# Display Editable Table
+# -----------------------------
+st.subheader("✏️ Existing Lesson Plans")
+if not df.empty:
+    edited_df = st.data_editor(
+        df,
+        num_rows="dynamic",
+        use_container_width=True,
+        hide_index=True,
+        column_config={
+            "plan_id": st.column_config.NumberColumn("Plan ID", disabled=True),
+            "course_id": st.column_config.NumberColumn("Course ID"),
+            "professor_id": st.column_config.NumberColumn("Professor ID"),
+            "date": st.column_config.DateColumn("Date"),
+            "content": st.column_config.TextColumn("Content"),
+        },
+        key="lesson_plans_editor"
+    )
+else:
+    st.info("No lesson plans available yet.")
+
+# -----------------------------
+# Display as Cards
 # -----------------------------
 st.subheader("📖 All Lesson Plans")
-for _, row in df.sort_values("date", ascending=False).iterrows():
-    with st.container():
+if not df.empty:
+    for _, row in df.sort_values("date", ascending=False).iterrows():
         st.markdown(f"""
         <div style="background-color:#f0f2f6; padding:15px; border-radius:10px; margin-bottom:10px;">
             <strong>📌 Course ID:</strong> {row['course_id']} &nbsp; | &nbsp;
