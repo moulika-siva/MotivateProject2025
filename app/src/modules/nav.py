@@ -17,42 +17,42 @@ def AboutPageNav():
 #### ------------------------ Examples for Role of student ------------------------
 def StudentHomeNav():
     st.sidebar.page_link(
-        "pages/05_Student_Home.py", label="Student", icon="🧑‍🎓"
+        "pages/30_Student_Home.py", label="Student", icon="🧑‍🎓"
     )
 
 
 def StudentCalNav():
     st.sidebar.page_link(
-        "pages/24_Student_Cal.py", label="Student Calendar View", icon="🗓️"
+        "pages/33_Student_Cal.py", label="Student Calendar View", icon="🗓️"
     )
 
 
 def TasksNav():
-    st.sidebar.page_link("pages/22_Student_Tasks.py", label="Student Tasks", icon="📋")
+    st.sidebar.page_link("pages/31_Student_Tasks.py", label="Student Tasks", icon="📋")
 
 def MCATNav():
-    st.sidebar.page_link("pages/23_MCAT.py", label="MCAT Requirements", icon="🩺")
+    st.sidebar.page_link("pages/32_MCAT.py", label="MCAT Requirements", icon="🩺")
 
 
 ## ------------------------ Examples for Role of decision_maker ------------------------
 def DecisionMakerHomeNav():
-    st.sidebar.page_link("pages/00_Dec_Maker_Home.py", label="Decision Maker", icon="🧑‍🏫")
+    st.sidebar.page_link("pages/10_Dec_Maker_Home.py", label="Decision Maker", icon="🧑‍🏫")
 
 
 def ViewCourseNav():
     st.sidebar.page_link(
-        "pages/05_View_Courses.py", label="View Courses", icon="📚"
+        "pages/11_View_Courses.py", label="View Courses", icon="📚"
     )
 
 
 def UpdateLessonPlanNav():
     st.sidebar.page_link(
-        "pages/06_Lesson_Plans.py", label="Update Lesson Plans", icon="🗒️"
+        "pages/12_Lesson_Plans.py", label="Update Lesson Plans", icon="🗒️"
     )
 
 def FeedbackNav():
     st.sidebar.page_link(
-        "pages/07_Assignment_Feedback.py", label="Update Assignment Feedback", icon="📝"
+        "pages/13_Assignment_Feedback.py", label="Update Assignment Feedback", icon="📝"
     )
 
 
@@ -78,7 +78,7 @@ def GroceryNav():
     st.sidebar.page_link("pages/02_Grocery_List.py", label="Grocery Lists", icon="📋")
 
 def TasksNav():
-    st.sidebar.page_link("pages/22_Student_Tasks.py", label="Add a Task", icon="➕")
+    st.sidebar.page_link("pages/03_Tasks.py", label="Add a Task", icon="➕")
 
 def SleepLogsNav():
     st.sidebar.page_link("pages/04_Sleep_Logs.py", label="View Sleep Logs", icon="💤")

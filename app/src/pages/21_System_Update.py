@@ -9,18 +9,15 @@ st.set_page_config(layout='wide')
 
 SideBarLinks()
 
-st.title('Task Management Page')
+st.title('System Update Page')
 st.write('\n\n')
-st.write('## Adding a New Task')
+st.write('## Adding a System Update')
 
 
-with st.form("Add a Task"):
-    list_id = st.number_input("Enter List ID", min_value=0, step=1)
-    task_id = st.number_input("Enter Task ID", min_value=0, step=1)
-    description = st.text_input("Task Description")
-    duedate = st.date_input("Due Date")
-    frequency = st.selectbox("Task Frequency", ["One-time", "Daily", "Weekly"])
-    completionstatus = st.selectbox("Is it Completed?", ["No", "Yes"])
+with st.form("Add an Update"):
+    update_id = st.number_input("Enter Update ID", min_value=0, step=1)
+    update_type = st.text_input("Update Type")
+    update_date = st.date_input("Release Date")
     
     submitted = st.form_submit_button("Submit")
 
@@ -28,16 +25,16 @@ with st.form("Add a Task"):
         data = {}
         data['update_id'] = update_id
         data['update_type'] = update_type
-        data['update_release_date'] = update_date
+        data['update_release_date'] = update_date.isoformat()
         st.write("Sending data...")
         
         try:
-            response = requests.post("http://api:4000/p/tasks", json=data)
+            response = requests.post("http://api:4000/a/system_updates", json=data)
             
             if response.status_code == 201:
-                st.success("Task added successfully.")
+                st.success("Update added successfully.")
             else:
-                st.error(f"Failed to add task. Status code: {response.status_code}")
+                st.error(f"Failed to add update. Status code: {response.status_code}")
                 st.error(response.json().get('error', 'No additional error message provided.'))
 
         except requests.exceptions.RequestException as e:
