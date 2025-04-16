@@ -149,8 +149,8 @@ def create_to_do_list():
     the_response.status_code = 201
     return the_response
 #------------------------------------------------------------
-# Deletes all completed tasks for student
-@students.route('/students/tasks', methods=['DELETE'])
+# DELETE only completed tasks for a user
+@students.route('/students/delete-completed', methods=['DELETE'])  
 def delete_completed_tasks():
     user_id = request.args.get('user_id')
 
@@ -162,7 +162,25 @@ def delete_completed_tasks():
     ''', (user_id,))
     
     db.get_db().commit()
+    return jsonify({'message': 'Completed tasks deleted'}), 200
 
-    the_response = make_response(jsonify({'message': 'Completed tasks deleted'}))
+#------------------------------------------------------------
+#------------------------------------------------------------
+# Get all tasks for all students
+@students.route('/students/all-tasks', methods=['GET'])  
+def get_all_tasks():
+    cursor = db.get_db().cursor()
+    cursor.execute('''
+        SELECT t.task_id, t.description, t.due_date, t.frequency, tl.user_id
+        FROM tasks t
+        JOIN todo_list tl ON t.list_id = tl.list_id
+    ''')
+
+    tasks = cursor.fetchall()
+
+    if not tasks:
+        return jsonify({'message': 'No tasks found for any students'}), 404
+
+    the_response = make_response(jsonify(tasks))
     the_response.status_code = 200
     return the_response
