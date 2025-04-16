@@ -2,8 +2,30 @@ import streamlit as st
 import pandas as pd
 import requests
 import os
+from datetime import datetime, time
 
 st.title("Sleep Log Viewer")
+
+with st.form("Add a Sleep Log"):
+    baby_name = st.text_input("Baby Name")
+
+    start_date = st.date_input("Start Date", value=datetime.today())
+    start_time = st.time_input("Start Time", value=datetime.now().time())
+    end_date = st.date_input("End Date", value=datetime.today())
+    end_time = st.time_input("End Time", value=(datetime.now().time()))
+
+    submitted = st.form_submit_button("Submit")
+
+    if submitted:
+        # Combine date and time into full datetime
+        start_datetime = datetime.combine(start_date, start_time)
+        end_datetime = datetime.combine(end_date, end_time)
+
+        st.success("Sleep log submitted (not yet connected to backend).")
+        st.write("Baby Name:", baby_name)
+        st.write("Start Time:", start_datetime)
+        st.write("End Time:", end_datetime)
+
 
 # Define Flask backend URL directly (change host if needed)
 FLASK_BACKEND_URL = "http://web-api:4000/p/sleep_logs"
