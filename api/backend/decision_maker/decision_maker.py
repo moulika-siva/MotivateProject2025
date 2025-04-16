@@ -14,27 +14,32 @@ from backend.db_connection import db
 # routes.
 decision_maker = Blueprint('decision_maker', __name__)
 
-
 #------------------------------------------------------------
 # Get the courselists
 @decision_maker.route('/decision_maker/courselist', methods=['GET'])
-def get_grades():
+def get_course_enrollments():
     cursor = db.get_db().cursor()
-    
-    # Get the courses and average grades of the students from the system
-    cursor.execute(
-        '''SELECT student_id, students_name, courses.name,
+
+    # Actual SQL query to get real values
+    cursor.execute('''
+        SELECT 
+            students.student_id,
+            students.name AS student_name,
+            students.course_id,
+            courses.name AS course_name
         FROM students
-        JOIN courses ON grades.course_id = courses.id
-        GROUP BY students.id, courses.id
-        ORDER BY students_name, courses.course_name'''
-    )
-    
-    grade_data = cursor.fetchall()
-    
-    response = make_response(jsonify(grade_data))
-    response.status_code = 200
-    return response
+        JOIN courses ON students.course_id = courses.course_id
+        ORDER BY students.name, courses.name;
+    ''')
+
+    # Get actual results
+    rows = cursor.fetchall()
+    column_names = [desc[0] for desc in cursor.description]
+
+    # Convert each row to a dict of {column: value}
+    data = [dict(zip(column_names, row)) for row in rows]
+
+    return make_response(jsonify(data), 200)
 
 #------------------------------------------------------------
 # Create a new lesson plan and enter into the system

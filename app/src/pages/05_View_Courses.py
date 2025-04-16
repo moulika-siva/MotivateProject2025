@@ -2,57 +2,49 @@ import streamlit as st
 import pandas as pd
 import requests
 
-# Simulated student and course data (from your SQL inserts)
-students_data = [
-    {"student_id": 2, "course_id": 46, "student_name": "Skyler Davis"},
-    {"student_id": 3, "course_id": 26, "student_name": "Peyton Moore"},
-    {"student_id": 4, "course_id": 47, "student_name": "Jordan Davis"},
-    {"student_id": 5, "course_id": 35, "student_name": "Peyton Jones"},
-    {"student_id": 6, "course_id": 34, "student_name": "Skyler Davis"},
-    {"student_id": 7, "course_id": 8, "student_name": "Avery Wilson"},
-    {"student_id": 8, "course_id": 35, "student_name": "Alex Williams"},
-    {"student_id": 9, "course_id": 40, "student_name": "Morgan Williams"},
-    {"student_id": 10, "course_id": 14, "student_name": "Alex Miller"},
-]
+st.set_page_config(page_title="Course Enrollment Viewer", layout="wide")
+st.title("📘 Course Enrollment Viewer")
 
-courses_data = [
-    {"course_id": 8, "course_name": "Course8"},
-    {"course_id": 14, "course_name": "Course14"},
-    {"course_id": 26, "course_name": "Course26"},
-    {"course_id": 34, "course_name": "Course34"},
-    {"course_id": 35, "course_name": "Course35"},
-    {"course_id": 40, "course_name": "Course40"},
-    {"course_id": 46, "course_name": "Course46"},
-    {"course_id": 47, "course_name": "Course47"},
-]
+# Flask API Endpoint (adjust host if needed)
+API_URL = "http://web-api:4000/d/decision_maker/courselist"
 
-# Convert to DataFrames
-students_df = pd.DataFrame(students_data)
-courses_df = pd.DataFrame(courses_data)
+# Fetch student-course enrollment data from Flask API
+try:
+    response = requests.get(API_URL)
+    response.raise_for_status()
+    enrollment_data = response.json()
+except requests.exceptions.RequestException as e:
+    st.error(f"❌ Failed to fetch enrollment data: {e}")
+    st.stop()
 
-# Merge students with course names
-merged_df = students_df.merge(courses_df, on="course_id")
+# Convert API response to DataFrame
+df = pd.DataFrame(enrollment_data)
 
-# App title
-st.title("Course Enrollment Viewer")
+# Validate structure
+required_columns = {"student_id", "student_name", "course_id", "course_name"}
+if not required_columns.issubset(df.columns):
+    st.error("API response is missing one or more required fields.")
+    st.stop()
 
 # Sidebar filter
-st.sidebar.header("Filter by Course")
-course_options = ["All Courses"] + sorted(merged_df["course_name"].unique().tolist())
+st.sidebar.header("🔍 Filter by Course")
+course_options = ["All Courses"] + sorted(df["course_name"].dropna().unique())
 selected_course = st.sidebar.selectbox("Select a course:", course_options)
 
-# Filtered data
+# Filter data by course if selected
 if selected_course != "All Courses":
-    filtered_df = merged_df[merged_df["course_name"] == selected_course]
+    filtered_df = df[df["course_name"] == selected_course]
 else:
-    filtered_df = merged_df
+    filtered_df = df
 
-# Display table
-st.header(f"Enrolled Students{' in ' + selected_course if selected_course != 'All Courses' else ''}")
-st.dataframe(filtered_df[["student_name", "student_id", "course_name"]].rename(columns={
-    "student_name": "Student Name",
-    "student_id": "Student ID",
-    "course_name": "Course"
-}))
-
-# decision_maker = requests.get('http://api:4000/d/decision_maker/courselist').json()
+# Display DataFrame
+st.subheader(f"👨‍🎓 Students in {selected_course}" if selected_course != "All Courses" else "👨‍🎓 All Enrolled Students")
+st.dataframe(
+    filtered_df[["student_name", "student_id", "course_name", "course_id"]].rename(columns={
+        "student_name": "Student Name",
+        "student_id": "Student ID",
+        "course_name": "Course Name",
+        "course_id": "Course ID"
+    }),
+    use_container_width=True
+)
