@@ -4,7 +4,7 @@ from backend.db_connection import db
 from backend.students.student_routes import students
 from backend.system_admins.system_admins_routes import system_admins
 from backend.decision_maker.decision_maker import decision_maker
-from backend.parent import parent
+from backend.parent.parent import parents
 from backend.simple.simple_routes import simple_routes
 import os
 from dotenv import load_dotenv
@@ -45,7 +45,7 @@ def create_app():
     app.register_blueprint(students,    url_prefix='/s')
     app.register_blueprint(system_admins,   url_prefix='/a')
     app.register_blueprint(decision_maker,    url_prefix='/d')
-    app.register_blueprint(parent,    url_prefix='/p')
+    app.register_blueprint(parents,    url_prefix='/p')
 
     # Don't forget to return the app object
     return app
