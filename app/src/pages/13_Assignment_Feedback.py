@@ -27,8 +27,9 @@ except requests.exceptions.RequestException as e:
 df = pd.DataFrame(assignments_data)
 df["due_date"] = pd.to_datetime(df["due_date"])
 
-# Treat description as feedback
+# Rename 'description' to 'feedback' and remove original column
 df["feedback"] = df["description"]
+df.drop(columns=["description"], inplace=True)
 
 # -----------------------------
 # Feedback Editor
@@ -56,8 +57,7 @@ if st.button("💾 Save All Changes"):
     for _, row in edited_df.iterrows():
         payload = {
             "assign_id": row["assign_id"],
-            "description": row["feedback"],  # Store feedback as description
-            "feedback": row["feedback"]
+            "description": row["feedback"]  # Send feedback as 'description'
         }
         try:
             r = requests.put(API_URL_PUT, json=payload)

@@ -59,21 +59,29 @@ def get_lesson_plans():
 #------------------------------------------------------------
 # Creates a new lesson plan
 @decision_maker.route('/decision_maker/lesson-plans', methods=['POST'])
-def create_lesson_plan():
-    current_app.logger.info('POST /decision_maker/lesson-plans')
-    data = request.json
-    course_id = data['course_id']
-    professor_id = data['professor_id']
-    date = data['date']
-    content = data['content']
+def add_lesson_plan():
+    current_app.logger.info("POST /lesson-plans")
+    data = request.get_json()
 
-    cursor = db.get_db().cursor()
-    cursor.execute(
-        'INSERT INTO lesson_plans (course_id, professor_id, date, content) VALUES (%s, %s, %s, %s)',
-        (course_id, professor_id, date, content)
-    )
-    db.get_db().commit()
-    return jsonify({'message': 'Lesson plan created!'}), 201
+    course_id = data.get('course_id')
+    professor_id = data.get('professor_id')
+    lesson_date = data.get('date')
+    content = data.get('content')
+
+    if not all([course_id, professor_id, lesson_date, content]):
+        return jsonify({'error': 'Missing required fields'}), 400
+
+    try:
+        cursor = db.get_db().cursor()
+        cursor.execute('''
+            INSERT INTO lesson_plans (course_id, professor_id, date, content)
+            VALUES (%s, %s, %s, %s)
+        ''', (course_id, professor_id, lesson_date, content))
+        db.get_db().commit()
+        return jsonify({'message': 'Lesson plan added successfully'}), 201
+    except Exception as e:
+        current_app.logger.error(f"❌ ERROR adding lesson plan: {e}")
+        return jsonify({'error': str(e)}), 500
 
 #------------------------------------------------------------
 # Delete old exams from the system 
@@ -135,22 +143,30 @@ def get_assignments():
 #------------------------------------------------------------
 # Updates a single assignment's description and feedback
 @decision_maker.route('/decision_maker/assignments', methods=['PUT'])
-def update_assignment_description():
-    current_app.logger.info('PUT /decision_maker/assignments')
-    
-    assignment_data = request.json
-    assign_id = assignment_data.get('assign_id')
-    description = assignment_data.get('description')
-    feedback = assignment_data.get('feedback')
-    
-    cursor = db.get_db().cursor()
-    cursor.execute(
-        'UPDATE assignments SET description = %s, feedback = %s WHERE assign_id = %s',
-        (description, feedback, assign_id)
-    )
-    db.get_db().commit()
-    
-    return jsonify({'message': 'Assignment updated!'}), 200
+def update_assignment_feedback():
+    current_app.logger.info("PUT /assignments")
+
+    try:
+        data = request.get_json()
+        assign_id = data.get('assign_id')
+        description = data.get('description')  # this is the feedback
+
+        if not assign_id or description is None:
+            return jsonify({"error": "Missing assignment ID or feedback"}), 400
+
+        cursor = db.get_db().cursor()
+        cursor.execute('''
+            UPDATE assignments
+            SET description = %s
+            WHERE assign_id = %s
+        ''', (description, assign_id))
+        db.get_db().commit()
+
+        return jsonify({"message": "Assignment updated successfully"}), 200
+
+    except Exception as e:
+        current_app.logger.error(f"❌ Error updating assignment: {e}")
+        return jsonify({"error": str(e)}), 500
   
 #------------------------------------------------------------
 # Get student's information by course for communication
