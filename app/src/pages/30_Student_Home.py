@@ -17,15 +17,15 @@ st.write('### Organize your personal/academic life!')
 if st.button('CALENDAR', 
              type='primary',
              use_container_width=True):
-  st.switch_page('pages/24_Student_Cal.py')
+  st.switch_page('pages/33_Student_Cal.py')
 
 if st.button('TASKS', 
              type='primary', 
              use_container_width=True):
-  st.switch_page('pages/22_Student_Tasks.py')
+  st.switch_page('pages/31_Student_Tasks.py')
 
 if st.button('MCAT', 
              type='primary', 
              use_container_width=True):
-  st.switch_page('pages/23_MCAT.py')
+  st.switch_page('pages/32_MCAT.py')
 
