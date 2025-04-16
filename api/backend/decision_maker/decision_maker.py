@@ -15,31 +15,31 @@ from backend.db_connection import db
 decision_maker = Blueprint('decision_maker', __name__)
 
 #------------------------------------------------------------
-# Get the courselists
+# Gets course list items for decision maker
 @decision_maker.route('/decision_maker/courselist', methods=['GET'])
 def get_course_enrollments():
+    current_app.logger.info('GET /decision_maker/courselist route')  # Add logging for better tracking
     cursor = db.get_db().cursor()
 
-    # Actual SQL query to get real values
+    # Actual SQL query to get the course enrollments
     cursor.execute('''
         SELECT 
-            students.student_id,
-            students.name AS student_name,
-            students.course_id,
-            courses.name AS course_name
-        FROM students
-        JOIN courses ON students.course_id = courses.course_id
-        ORDER BY students.name, courses.name;
+        s.student_id,
+        s.name AS student_name,
+        c.course_id,
+        c.name AS course_name
+        FROM students s
+        JOIN courses c ON s.course_id = c.course_id
+        ORDER BY s.name, c.name;
     ''')
 
-    # Get actual results
+    # Fetch the data
     rows = cursor.fetchall()
-    column_names = [desc[0] for desc in cursor.description]
 
-    # Convert each row to a dict of {column: value}
-    data = [dict(zip(column_names, row)) for row in rows]
-
-    return make_response(jsonify(data), 200)
+    # Prepare the response as JSON
+    the_response = make_response(jsonify(rows))
+    the_response.status_code = 200  # Set status to 200 OK
+    return the_response
 
 #------------------------------------------------------------
 # Create a new lesson plan and enter into the system
