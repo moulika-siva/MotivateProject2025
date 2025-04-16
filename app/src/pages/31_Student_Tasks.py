@@ -7,7 +7,7 @@ st.title("Student Tasks Management")
 
 # Backend URLs
 FLASK_BACKEND_URL_ALL_TASKS = "http://web-api:4000/s/students/all-tasks"  # GET all tasks
-FLASK_BACKEND_URL_DELETE_TASKS = "http://localhost:4000/s/students/delete-completed"  # DELETE completed tasks
+FLASK_BACKEND_URL_DELETE_TASKS = "http://web-api:4000/s/students/delete-completed"  # DELETE completed tasks
 
 # Function to fetch all tasks
 def fetch_all_tasks():
