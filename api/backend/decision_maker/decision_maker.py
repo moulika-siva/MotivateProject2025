@@ -42,33 +42,38 @@ def get_course_enrollments():
     return the_response
 
 #------------------------------------------------------------
-# Create a new lesson plan and enter into the system
+# Gets existing lesson plans
+@decision_maker.route('/decision_maker/lesson-plans', methods=['GET'])
+def get_lesson_plans():
+    current_app.logger.info('GET /decision_maker/lesson-plans')
+    cursor = db.get_db().cursor()
+    cursor.execute('''
+        SELECT 
+            plan_id, course_id, professor_id, date, content
+        FROM lesson_plans
+        ORDER BY date DESC;
+    ''')
+    rows = cursor.fetchall()
+    return jsonify(rows), 200
+
+#------------------------------------------------------------
+# Creates a new lesson plan
 @decision_maker.route('/decision_maker/lesson-plans', methods=['POST'])
 def create_lesson_plan():
-    current_app.logger.info('POST /decision_maker/lesson-plans route')
-    
-    # Get the lesson plan data from the request
-    lesson_plan_data = request.json
-    course_id = lesson_plan_data['course_id']
-    professor_id = lesson_plan_data['professor_id']
-    date = lesson_plan_data['date']
-    content = lesson_plan_data['content']
-    
-    # Insert the new lesson plan into the database
-    query = 'INSERT INTO lesson_plans (course_id, professor_id, date, content) VALUES (%s, %s, %s, %s)'
-    data = (course_id, professor_id, date, content)
-    
+    current_app.logger.info('POST /decision_maker/lesson-plans')
+    data = request.json
+    course_id = data['course_id']
+    professor_id = data['professor_id']
+    date = data['date']
+    content = data['content']
+
     cursor = db.get_db().cursor()
-    cursor.execute(query, data)
+    cursor.execute(
+        'INSERT INTO lesson_plans (course_id, professor_id, date, content) VALUES (%s, %s, %s, %s)',
+        (course_id, professor_id, date, content)
+    )
     db.get_db().commit()
-    
-    # Get the ID of the newly created lesson plan
-    new_plan_id = cursor.lastrowid
-    
-    return jsonify({
-        'message': 'Lesson plan created successfully!',
-        'plan_id': new_plan_id
-    }), 201
+    return jsonify({'message': 'Lesson plan created!'}), 201
 
 #------------------------------------------------------------
 # Delete old exams from the system 
@@ -97,25 +102,55 @@ def delete_exams(exam_id):
         }), 404
 
 #------------------------------------------------------------
-# Update assignment description and feedback
-@decision_maker.route('/decision_maker/assignments/', methods=['PUT'])
+# Gets all assignments
+@decision_maker.route('/decision_maker/assignments', methods=['GET'])
+def get_assignments():
+    try:
+        current_app.logger.info('GET /decision_maker/assignments')
+        cursor = db.get_db().cursor()
+        cursor.execute('''
+            SELECT assign_id, course_id, description, due_date
+            FROM assignments
+            ORDER BY due_date;
+        ''')
+        rows = cursor.fetchall()
+
+        # Convert 'description' into both 'description' and 'feedback'
+        updated_rows = []
+        for row in rows:
+            updated_rows.append({
+                "assign_id": row["assign_id"],
+                "course_id": row["course_id"],
+                "description": row["description"],
+                "due_date": row["due_date"],
+                "feedback": row["description"],  # feedback = description
+            })
+
+        return jsonify(updated_rows), 200
+    except Exception as e:
+        current_app.logger.error("Error fetching assignments:")
+        current_app.logger.error(traceback.format_exc())
+        return jsonify({"error": str(e)}), 500
+
+#------------------------------------------------------------
+# Updates a single assignment's description and feedback
+@decision_maker.route('/decision_maker/assignments', methods=['PUT'])
 def update_assignment_description():
-    current_app.logger.info('PUT /decision_maker/assignments route')
+    current_app.logger.info('PUT /decision_maker/assignments')
     
-    # Get assignment data from request body
     assignment_data = request.json
     assign_id = assignment_data.get('assign_id')
     description = assignment_data.get('description')
     feedback = assignment_data.get('feedback')
     
-    # Update the assignment in the database
-    query = 'UPDATE assignments SET description = %s, feedback = %s WHERE assign_id = %s'
-    data = (description, feedback, assign_id)
     cursor = db.get_db().cursor()
-    
-    cursor.execute(query, data)
+    cursor.execute(
+        'UPDATE assignments SET description = %s, feedback = %s WHERE assign_id = %s',
+        (description, feedback, assign_id)
+    )
     db.get_db().commit()
-    return 'assignments updated!'
+    
+    return jsonify({'message': 'Assignment updated!'}), 200
   
 #------------------------------------------------------------
 # Get student's information by course for communication

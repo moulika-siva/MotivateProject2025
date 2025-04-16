@@ -1,30 +1,35 @@
 import streamlit as st
 import pandas as pd
+import requests
 from datetime import date
 
 st.set_page_config(page_title="Lesson Plan Manager", layout="wide")
-
 st.title("📚 Lesson Plan Manager")
 
-# Sample lesson plans
-lesson_plans_data = [
-    {"plan_id": 1, "course_id": 46, "professor_id": 187, "date": "2023-10-25", "content": "Lesson content 1 for Course 46"},
-    {"plan_id": 2, "course_id": 17, "professor_id": 93, "date": "2025-11-20", "content": "Lesson content 2 for Course 17"},
-    {"plan_id": 3, "course_id": 28, "professor_id": 105, "date": "2025-06-22", "content": "Lesson content 3 for Course 28"},
-]
+BASE_URL = "http://web-api:4000"
+API_URL_GET = f"{BASE_URL}/d/decision_maker/lesson-plans"
+API_URL_POST = f"{BASE_URL}/d/decision_maker/lesson-plans"
 
-# Convert to DataFrame
+# -----------------------------
+# Fetch Existing Lesson Plans
+# -----------------------------
+try:
+    response = requests.get(API_URL_GET)
+    response.raise_for_status()
+    lesson_plans_data = response.json()
+except requests.exceptions.RequestException as e:
+    st.error(f"❌ Failed to fetch lesson plan data: {e}")
+    st.stop()
+
 df = pd.DataFrame(lesson_plans_data)
 df["date"] = pd.to_datetime(df["date"])
 
-# Use session state
-if "lesson_plans_df" not in st.session_state:
-    st.session_state.lesson_plans_df = df.copy()
-
-# === Editable Table ===
+# -----------------------------
+# Editable Table
+# -----------------------------
 st.subheader("✏️ Edit Existing Lesson Plans")
 edited_df = st.data_editor(
-    st.session_state.lesson_plans_df,
+    df,
     num_rows="dynamic",
     use_container_width=True,
     hide_index=True,
@@ -37,9 +42,10 @@ edited_df = st.data_editor(
     },
     key="lesson_plans_editor"
 )
-st.session_state.lesson_plans_df = edited_df
 
-# === Add New Plan ===
+# -----------------------------
+# Add a New Plan
+# -----------------------------
 st.subheader("➕ Add a New Lesson Plan")
 with st.form("add_lesson_plan_form", clear_on_submit=True):
     new_course_id = st.number_input("Course ID", min_value=1, step=1)
@@ -52,24 +58,25 @@ with st.form("add_lesson_plan_form", clear_on_submit=True):
         if new_content.strip() == "":
             st.warning("Please enter some lesson content.")
         else:
-            new_id = st.session_state.lesson_plans_df["plan_id"].max() + 1
-            new_entry = {
-                "plan_id": new_id,
+            new_plan = {
                 "course_id": new_course_id,
                 "professor_id": new_professor_id,
-                "date": pd.to_datetime(new_date),
-                "content": new_content,
+                "date": str(new_date),
+                "content": new_content
             }
-            st.session_state.lesson_plans_df = pd.concat(
-                [st.session_state.lesson_plans_df, pd.DataFrame([new_entry])],
-                ignore_index=True,
-            )
-            st.success("✅ New lesson plan added!")
-            st.rerun()
+            try:
+                post_resp = requests.post(API_URL_POST, json=new_plan)
+                post_resp.raise_for_status()
+                st.success("✅ New lesson plan added!")
+                st.rerun()
+            except requests.exceptions.RequestException as e:
+                st.error(f"❌ Failed to add lesson plan: {e}")
 
-# === Display Plans in Card Format ===
+# -----------------------------
+# Display All Lesson Plans
+# -----------------------------
 st.subheader("📖 All Lesson Plans")
-for idx, row in st.session_state.lesson_plans_df.sort_values("date", ascending=False).iterrows():
+for _, row in df.sort_values("date", ascending=False).iterrows():
     with st.container():
         st.markdown(f"""
         <div style="background-color:#f0f2f6; padding:15px; border-radius:10px; margin-bottom:10px;">
@@ -79,5 +86,3 @@ for idx, row in st.session_state.lesson_plans_df.sort_values("date", ascending=F
             <em>{row['content']}</em>
         </div>
         """, unsafe_allow_html=True)
-
-# decision_maker = requests.put('http://api:4000/d/decision_maker/lesson-plans').json()
