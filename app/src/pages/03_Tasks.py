@@ -53,6 +53,40 @@ with st.form("Add a Task"):
             st.error(f"Request failed: {e}")
 
 # -----------------------------
+# View All Tasks
+# -----------------------------
+st.markdown("## All Tasks")
+
+try:
+    response = requests.get(f"{BASE_URL}/p/tasks")  # Adjust the route if needed
+    response.raise_for_status()
+    tasks_data = response.json()
+
+    if not tasks_data:
+        st.info("No tasks available.")
+    else:
+        # Convert to DataFrame
+        import pandas as pd
+        tasks_df = pd.DataFrame(tasks_data)
+
+        # Reorder and rename columns for display
+        if not tasks_df.empty:
+            tasks_df = tasks_df[["task_id", "list_id", "description", "due_date", "frequency"]]
+            tasks_df = tasks_df.rename(columns={
+                "task_id": "Task ID",
+                "list_id": "List ID",
+                "description": "Description",
+                "due_date": "Due Date",
+                "frequency": "Status"
+            })
+
+        st.dataframe(tasks_df, use_container_width=True)
+
+except requests.exceptions.RequestException as e:
+    st.error(f"Failed to load tasks: {e}")
+
+
+# -----------------------------
 # Update Task Frequency 
 # -----------------------------
 st.markdown("## Update Task Frequency")

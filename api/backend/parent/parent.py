@@ -193,3 +193,25 @@ def create_todo_list():
     cursor.execute(query, data)
     db.get_db().commit()
     return 'To-do list created!', 201
+
+
+#------------------------------------------------------------
+# gets all tasks
+@parents.route('/tasks', methods=['GET'])
+def get_tasks():
+    current_app.logger.info('GET /tasks route')
+    cursor = db.get_db().cursor()
+
+    # Select relevant fields
+    cursor.execute('''
+        SELECT task_id, list_id, description, due_date, frequency
+        FROM tasks
+        ORDER BY due_date ASC;
+    ''')
+
+    rows = cursor.fetchall()
+    
+    the_response = make_response(jsonify(rows))
+    the_response.status_code = 200
+    return the_response
+
